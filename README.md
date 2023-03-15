@@ -1,7 +1,8 @@
 # DB-project
-Project for databases AGH UST
+### Project for databases AGH UST
+Application for renting electric scooters and bicycles
 
-Technologies:
+### Technologies:
 Fronted:
 - Angular
 
@@ -10,7 +11,7 @@ Backend:
 - express
 - MongoDB
 
-Collaborators:
+### Collaborators:
 - Igor Swat
 - Michał Skałka
 - Jakub Płowiec
