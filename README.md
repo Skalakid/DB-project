@@ -9,3 +9,8 @@ Backend:
 - Node.js
 - express
 - MongoDB
+
+Collaborators:
+- Igor Swat
+- Michał Skałka
+- Jakub Płowiec
