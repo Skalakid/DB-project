@@ -9,7 +9,7 @@ Fronted:
 Backend:
 - Node.js
 - express
-- Oracle PL/SQL
+- Oracle Database
 
 ### Collaborators:
 - Igor Swat
