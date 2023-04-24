@@ -10,7 +10,10 @@ create table USERS
             check (e_mail like '%@%'),
     PHONE     VARCHAR2(12)
         constraint USERS_CHK2
-            check (regexp_like(PHONE, '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'))
+            check (regexp_like(PHONE, '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')),
+    PASSWORD  VARCHAR2(20)
+        constraint USERS_CHK3
+            check (LENGTH(PASSWORD) > 5)
 )
 /
 

@@ -131,20 +131,20 @@ insert into VEHICLE(model_id, battery_code, lat_cords, lng_cords, status, energy
 values ('PRO', 'PIWO333', 50.06880, 19.90621, 'Available', 100, 1);
 
 -- Users:
-insert into USERS(firstname, lastname, e_mail, phone)
-values ('Igor', 'Swat', 'igorswat2002@o2.pl', '123456789');
+insert into USERS(firstname, lastname, e_mail, phone, password)
+values ('Igor', 'Swat', 'igorswat2002@o2.pl', '123456789', 'Tup2431');
 
-insert into USERS(firstname, lastname, e_mail, phone)
-values ('Adam', 'Nowak', 'deer1324@gmail.com', '764264555');
+insert into USERS(firstname, lastname, e_mail, phone, password)
+values ('Adam', 'Nowak', 'deer1324@gmail.com', '764264555', 'aba333');
 
-insert into USERS(firstname, lastname, e_mail, phone)
-values ('Marek', 'Garucha', 'mgarucha@onet.pl', null);
+insert into USERS(firstname, lastname, e_mail, phone, password)
+values ('Marek', 'Garucha', 'mgarucha@onet.pl', null, 'aaaaaa');
 
-insert into USERS(firstname, lastname, e_mail, phone)
-values ('Baran', 'Adamski', 'bialykot00@gmail.com', '671437561');
+insert into USERS(firstname, lastname, e_mail, phone, password)
+values ('Baran', 'Adamski', 'bialykot00@gmail.com', '671437561', 'abrn21');
 
-insert into USERS(firstname, lastname, e_mail, phone)
-values ('Robert', 'Robcio', 'robbi@gmail.com', null);
+insert into USERS(firstname, lastname, e_mail, phone, password)
+values ('Robert', 'Robcio', 'robbi@gmail.com', null, '1234567890');
 
 -- Reservations
 insert into RESERVATION(user_id, vehicle_id, r_begin, r_end)
