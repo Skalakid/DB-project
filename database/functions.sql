@@ -106,3 +106,63 @@ begin
     end if;
 end;
 /
+
+create function vehicles_in_area(lat_min real, lng_min real, lat_max real, lng_max real)
+    return VEHICLE_DATA_TABLE
+as
+    result VEHICLE_DATA_TABLE;
+begin
+    select VEHICLE_DATA(av.VEHICLE_ID, av.MODEL_ID, av.LAT_CORDS, av.LNG_CORDS, av.DURATION,
+        av.ENERGY_LEVEL, av.COST_PER_MINUTE) bulk collect into result
+    from AVAILABLE_VEHICLES av
+    where (av.LAT_CORDS between lat_min and lat_max)
+        and (av.LNG_CORDS between lng_min and lng_max);
+    return result;
+end;
+/
+
+create function vehicles_by_model(m_id varchar2)
+    return VEHICLE_DATA_TABLE
+as
+    result VEHICLE_DATA_TABLE;
+begin
+    select VEHICLE_DATA(av.VEHICLE_ID, av.MODEL_ID, av.LAT_CORDS, av.LNG_CORDS, av.DURATION,
+        av.ENERGY_LEVEL, av.COST_PER_MINUTE) bulk collect into result
+    from AVAILABLE_VEHICLES av
+    where av.MODEL_ID = m_id;
+    return result;
+end;
+/
+
+create function vehicles_by_price(price_min real, price_max real)
+    return VEHICLE_DATA_TABLE
+as
+    result VEHICLE_DATA_TABLE;
+begin
+    select VEHICLE_DATA(av.VEHICLE_ID, av.MODEL_ID, av.LAT_CORDS, av.LNG_CORDS, av.DURATION,
+        av.ENERGY_LEVEL, av.COST_PER_MINUTE) bulk collect into result
+    from AVAILABLE_VEHICLES av
+    where av.COST_PER_MINUTE between price_min and price_max;
+    return result;
+end;
+/
+
+create function vehicle_info(v_id int)
+    return VEHICLES%rowtype
+as
+    result VEHICLES%rowtype;
+    exc1 exception;
+begin
+    if not VEHICLE_EXIST(v_id) then
+        raise exc1;
+    end if;
+    select * into result
+    from VEHICLES v
+    where v.VEHICLE_ID = v_id;
+    return result;
+exception
+    when exc1 then
+        raise_application_error(-20002, 'vehicle not found');
+        return null;
+end;
+/
