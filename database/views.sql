@@ -47,7 +47,7 @@ select r.RESERVATION_ID, r.USER_ID, r.VEHICLE_ID, r.R_BEGIN, r.R_END,
 /
 
 create view USERS_STATS as
-select u.USER_ID, count(r.USER_ID) as no_reservations, sum(r.COST) as total_cost
+select u.USER_ID, count(r.USER_ID) as no_reservations, nvl(sum(r.COST), 0) as total_cost
     from USERS u
     left join RESERVATIONS r
     on u.USER_ID = r.USER_ID

@@ -6,6 +6,8 @@ create table USERS
     FIRSTNAME VARCHAR2(50) not null,
     LASTNAME  VARCHAR2(50) not null,
     E_MAIL    VARCHAR2(50) not null
+        constraint USERS_UN1
+            unique
         constraint USERS_CHK1
             check (e_mail like '%@%'),
     PHONE     VARCHAR2(12)
