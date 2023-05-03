@@ -8,7 +8,7 @@ Fronted:
 
 Backend:
 - Node.js
-- express
+- Express
 - Oracle Database
 
 ### Collaborators:
