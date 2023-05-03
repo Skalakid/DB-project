@@ -15,3 +15,8 @@ Backend:
 - Igor Swat
 - Michał Skałka
 - Jakub Płowiec
+
+## Project configuration
+Remember to install following VScode extensions, that will help you linting and formating the code:
+- [ESlint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) 
