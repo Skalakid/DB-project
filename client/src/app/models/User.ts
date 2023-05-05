@@ -1,7 +1,10 @@
 export interface User {
-  uid: string;
+  accessToken: string;
+  refreshToken: string;
+  userId: string;
   firstName: string;
   lastName: string;
   email: string;
   phoneNumber: string;
+  password: string;
 }

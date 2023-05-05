@@ -7,13 +7,17 @@ const extractJWT = (req: Request, res: Response, next: NextFunction) => {
   const token = authHeader && authHeader.split(' ')[1];
 
   if (token) {
-    jwt.verify(token, config.server.token.accessTokenSecret, (err, decoded) => {
-      if (err)
-        return res.status(404).json({ error: err, message: err.message });
+    jwt.verify(
+      token,
+      config.server.tokens.accessTokenSecret,
+      (err, decoded) => {
+        if (err)
+          return res.status(404).json({ error: err, message: err.message });
 
-      res.locals.jwt = decoded;
-      next();
-    });
+        res.locals.jwt = decoded;
+        next();
+      }
+    );
   }
   return res.status(401).json({ message: 'Unauthorized' });
 };

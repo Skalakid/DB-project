@@ -18,13 +18,17 @@ const ORACLE = {
 
 const SERVER_HOSTNAME = process.env.SERVER_HOSTNAME || 'localhost';
 const SERVER_PORT = process.env.SERVER_PORT || 3000;
-const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || 'megasecret';
+const ACCESS_TOKEN_SECRET =
+  process.env.ACCESS_TOKEN_SECRET || 'megasecretAccess';
+const REFRESH_TOKEN_SECRET =
+  process.env.REFRESH_TOKEN_SECRET || 'megasecretRefresh';
 
 const SERVER = {
   hostname: SERVER_HOSTNAME,
   port: SERVER_PORT,
-  token: {
+  tokens: {
     accessTokenSecret: ACCESS_TOKEN_SECRET,
+    refreshTokenSecret: REFRESH_TOKEN_SECRET,
   },
 };
 
