@@ -2,14 +2,24 @@ GET http://localhost:3000/users
 
 ################################
 
-POST http://localhost:3000/users/register
+POST http://localhost:3000/auth/register
 Content-Type: application/json
 
 {
     "firstName": "Kyle",
     "lastName": "Metzen",
-    "email": "lol@lol.pl",
+    "email": "lol2@lol.pl",
     "phoneNumber": "123123123",
     "password": "password"
 }
 
+###
+
+
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "lol@lol.pl",
+    "password": "password"
+}

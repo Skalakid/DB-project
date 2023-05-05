@@ -40,14 +40,14 @@ export class RegisterPageComponent {
 
   onSubmit(form: FormGroup) {
     const data = form.value;
-    const firstName = data.email;
-    const lastName = data.email;
+    const firstName = data.firstName;
+    const lastName = data.lastName;
     const email = data.email;
-    const phone = data.phone;
+    const phone = data.phoneNumber;
     const password = data.password;
     const repeatedPassword = data.repeatedPassword;
 
-    if (repeatedPassword === password) {
+    if (repeatedPassword !== password) {
       alert("Passwords don't match");
       return;
     }
