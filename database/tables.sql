@@ -1,4 +1,4 @@
-create table IGOREK.USERS
+create table USERS
 (
     USER_ID   NUMBER generated as identity
         constraint USERS_PK
@@ -19,7 +19,7 @@ create table IGOREK.USERS
 )
 /
 
-create table IGOREK.BATTERY
+create table BATTERY
 (
     BATTERY_CODE VARCHAR2(10)                 not null
         constraint BATTERY_PK
@@ -30,7 +30,7 @@ create table IGOREK.BATTERY
 )
 /
 
-create table IGOREK.MODEL
+create table MODEL
 (
     MODEL_ID  VARCHAR2(5) not null
         constraint MODEL_PK
@@ -47,17 +47,17 @@ create table IGOREK.MODEL
 )
 /
 
-create table IGOREK.VEHICLE
+create table VEHICLE
 (
     VEHICLE_ID      NUMBER generated as identity
         constraint VEHICLES_PK
             primary key,
     MODEL_ID        VARCHAR2(5)  not null
         constraint VEHICLES_FK1
-            references IGOREK.MODEL,
+            references MODEL,
     BATTERY_CODE    VARCHAR2(10) not null
         constraint VEHICLES_FK2
-            references IGOREK.BATTERY,
+            references BATTERY,
     LAT_CORDS       FLOAT(63)    not null
         constraint VEHICLES_CHK1
             check (LAT_CORDS between -90 and 90),
@@ -76,17 +76,17 @@ create table IGOREK.VEHICLE
 )
 /
 
-create table IGOREK.RESERVATION
+create table RESERVATION
 (
     RESERVATION_ID NUMBER generated as identity
         constraint RESERVATION_PK
             primary key,
     USER_ID        NUMBER not null
         constraint RESERVATION_FK1
-            references IGOREK.USERS,
+            references USERS,
     VEHICLE_ID     NUMBER not null
         constraint RESERVATION_FK2
-            references IGOREK.VEHICLE,
+            references VEHICLE,
     R_BEGIN        DATE   not null,
     R_END          DATE   not null,
     constraint RESERVATION_CHK1

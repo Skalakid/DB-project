@@ -1,10 +1,10 @@
-create view IGOREK.VEHICLES_TO_CHARGE as
+create view VEHICLES_TO_CHARGE as
 select VEHICLE_ID, BATTERY_CODE, LAT_CORDS, LNG_CORDS
     from VEHICLE
     where ENERGY_LEVEL = 0
 /
 
-create view IGOREK.VEHICLES as
+create view VEHICLES as
 select v.VEHICLE_ID, v.MODEL_ID, m.LENGTH_M, m.WIDTH_M, m.WEIGHT_KG,
            b.BATTERY_CODE, b.MAX_DURATION, v.COST_PER_MINUTE, v.STATUS
     from VEHICLE v
@@ -14,7 +14,7 @@ select v.VEHICLE_ID, v.MODEL_ID, m.LENGTH_M, m.WIDTH_M, m.WEIGHT_KG,
     on v.BATTERY_CODE = b.BATTERY_CODE
 /
 
-create view IGOREK.CURRENT_RESERVATIONS as
+create view CURRENT_RESERVATIONS as
 select r.RESERVATION_ID, u.USER_ID, u.FIRSTNAME, u.LASTNAME, u.E_MAIL, r.VEHICLE_ID, r.r_BEGIN, r.r_END
     from RESERVATION r
     join USERS u
@@ -22,7 +22,7 @@ select r.RESERVATION_ID, u.USER_ID, u.FIRSTNAME, u.LASTNAME, u.E_MAIL, r.VEHICLE
     where sysdate between r.R_BEGIN and r.R_END
 /
 
-create view IGOREK.AVAILABLE_VEHICLES as
+create view AVAILABLE_VEHICLES as
 select v.VEHICLE_ID, v.MODEL_ID, v.LAT_CORDS, v.LNG_CORDS, b.MAX_DURATION * v.ENERGY_LEVEL / 100 as duration,
        v.ENERGY_LEVEL, v.COST_PER_MINUTE
     from VEHICLE v
@@ -33,7 +33,7 @@ select v.VEHICLE_ID, v.MODEL_ID, v.LAT_CORDS, v.LNG_CORDS, b.MAX_DURATION * v.EN
     where cr.VEHICLE_ID is null and v.STATUS like 'Available' and v.ENERGY_LEVEL > 0
 /
 
-create view IGOREK.RESERVATIONS as
+create view RESERVATIONS as
 select r.RESERVATION_ID, r.USER_ID, r.VEHICLE_ID, r.R_BEGIN, r.R_END,
            ((extract(day from CAST(r.R_END as timestamp)) -
                 extract(day from CAST(r.R_BEGIN as timestamp))) * 24 * 60 +
@@ -46,7 +46,7 @@ select r.RESERVATION_ID, r.USER_ID, r.VEHICLE_ID, r.R_BEGIN, r.R_END,
     on r.VEHICLE_ID = v.VEHICLE_ID
 /
 
-create view IGOREK.USERS_STATS as
+create view USERS_STATS as
 select u.USER_ID, count(r.USER_ID) as no_reservations, nvl(sum(r.COST), 0) as total_cost
     from USERS u
     left join RESERVATIONS r
@@ -54,14 +54,14 @@ select u.USER_ID, count(r.USER_ID) as no_reservations, nvl(sum(r.COST), 0) as to
     group by u.USER_ID
 /
 
-create view IGOREK.USERS_INFO as
+create view USERS_INFO as
 select u.USER_ID, u.FIRSTNAME, u.LASTNAME, u.E_MAIL, u.PHONE, us.NO_RESERVATIONS, us.TOTAL_COST
     from USERS u
     join USERS_STATS us
     on u.USER_ID = us.USER_ID
 /
 
-create view IGOREK.VEHICLE_MODELS as
+create view VEHICLE_MODELS as
 select m.MODEL_ID, m.LENGTH_M, m.WIDTH_M, m.WEIGHT_KG, count(v.VEHICLE_ID) as total_vehicles
     from MODEL m
     left join VEHICLE v
