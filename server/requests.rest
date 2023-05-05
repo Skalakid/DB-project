@@ -1,4 +1,4 @@
-GET http://localhost:3000/users
+GET http://localhost:3000/auth/get/all
 
 ################################
 
@@ -23,3 +23,5 @@ Content-Type: application/json
     "email": "lol@lol.pl",
     "password": "password"
 }
+
+###
