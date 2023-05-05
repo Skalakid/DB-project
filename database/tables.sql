@@ -81,14 +81,15 @@ create table RESERVATION
     RESERVATION_ID NUMBER generated as identity
         constraint RESERVATION_PK
             primary key,
-    USER_ID        NUMBER       not null
+    USER_ID        NUMBER not null
         constraint RESERVATION_FK1
             references USERS,
-    VEHICLE_ID     NUMBER       not null
+    VEHICLE_ID     NUMBER not null
         constraint RESERVATION_FK2
             references VEHICLE,
-    BEGIN          TIMESTAMP(6) not null,
-    END            TIMESTAMP(6) not null,
+    R_BEGIN        DATE   not null,
+    R_END          DATE   not null,
     constraint RESERVATION_CHK1
-        check (BEGIN < END)
+        check (R_BEGIN < R_END)
 )
+/
