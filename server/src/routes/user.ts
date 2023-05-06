@@ -9,6 +9,6 @@ router.post('/refresh/token', controller.refreshToken);
 router.post('/login', controller.login);
 router.post('/register', controller.register);
 router.get('/get/all', controller.getAllUsers);
-router.delete('/logout', controller.logout);
+router.delete('/logout', extractJWT, controller.logout);
 
 export = router;

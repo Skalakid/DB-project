@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { RegisterPageComponent } from './register-page/register-page.component';
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
+import { HomePageComponent } from './home-page/home-page.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { NotFoundPageComponent } from './not-found-page/not-found-page.component
     LoginPageComponent,
     RegisterPageComponent,
     NotFoundPageComponent,
+    HomePageComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule],
   providers: [],
