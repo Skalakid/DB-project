@@ -54,10 +54,10 @@ create table VEHICLE
             primary key,
     MODEL_ID        VARCHAR2(5)  not null
         constraint VEHICLES_FK1
-            references MODEL,
+            references IGOREK.MODEL,
     BATTERY_CODE    VARCHAR2(10) not null
         constraint VEHICLES_FK2
-            references BATTERY,
+            references IGOREK.BATTERY,
     LAT_CORDS       FLOAT(63)    not null
         constraint VEHICLES_CHK1
             check (LAT_CORDS between -90 and 90),
@@ -83,10 +83,10 @@ create table RESERVATION
             primary key,
     USER_ID        NUMBER not null
         constraint RESERVATION_FK1
-            references USERS,
+            references IGOREK.USERS,
     VEHICLE_ID     NUMBER not null
         constraint RESERVATION_FK2
-            references VEHICLE,
+            references IGOREK.VEHICLE,
     R_BEGIN        DATE   not null,
     R_END          DATE   not null,
     constraint RESERVATION_CHK1

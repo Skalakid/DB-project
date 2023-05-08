@@ -104,3 +104,47 @@ begin
     values (u_id, v_id, current_date, current_date + p_duration);
 end;
 /
+
+create procedure add_vehicle(m_id varchar2, b_code varchar2, lat real, lng real, energy int, cost real)
+as
+    model varchar2(5);
+    battery varchar2(10);
+begin
+    select m.MODEL_ID into model from MODEL m where m.MODEL_ID = m_id;
+    select b.BATTERY_CODE into battery from BATTERY b where b.BATTERY_CODE = b_code;
+    if lat < -90 or lat > 90 then
+        raise_application_error(-20008, 'Incorrect LAT coordinate value');
+    end if;
+    if lng < -180 or lng > 180 then
+        raise_application_error(-20009, 'Incorrect LNG coordinate value');
+    end if;
+    if energy < 0 or energy > 100 then
+        raise_application_error(-20010, 'Incorrect energy value');
+    end if;
+    if cost < 0 then
+        raise_application_error(-20011, 'Cost can not be a negative value');
+    end if;
+    insert into VEHICLE(model_id, battery_code, lat_cords, lng_cords, status, energy_level, cost_per_minute)
+    values (m_id, b_code, lat, lng, 'Available', energy, cost);
+exception
+    when NO_DATA_FOUND then
+        raise_application_error(-20007, 'Not existing battery & model arguments');
+end;
+/
+
+create procedure update_cords(v_id int, lat real, lng real)
+as
+begin
+    if not VEHICLE_EXIST(v_id) then
+        raise_application_error(-20002, 'vehicle not found');
+    end if;
+    if lat < -90 or lat > 90 then
+        raise_application_error(-20008, 'Incorrect LAT coordinate value');
+    end if;
+    if lng < -180 or lng > 180 then
+        raise_application_error(-20009, 'Incorrect LNG coordinate value');
+    end if;
+    update VEHICLE v
+    set v.LAT_CORDS = lat, v.LNG_CORDS = lng
+    where v.VEHICLE_ID = v_id;
+end;
