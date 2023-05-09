@@ -41,8 +41,7 @@ export class AuthService {
         token: refreshToken,
       })();
     } catch (error) {
-      // console.error('[LOGOUT ERROR]', error); // I commented this log because everytime we refresh the server,
-      // server loses refreshTokens info and it "thinks" that we are already logged out.
+      //
     }
     localStorage.clear();
     this._router.navigate(['/login']);
@@ -56,17 +55,29 @@ export class AuthService {
     password: string
   ) {
     try {
-      const res = await post('/auth/register', {
+      await post('/auth/register', {
         firstName,
         lastName,
         phoneNumber,
         email,
         password,
       })();
-      console.log(res);
       this._router.navigate(['/login']);
     } catch (error) {
       alert('Something went wrong when registering the user');
     }
   }
+
+  refreshAccessToken = async (retryCount = 2) => {
+    try {
+      const refreshToken = await localStorage.getItem('refreshToken');
+      const res = await post('/auth/refresh/token', {
+        token: refreshToken,
+      })();
+      localStorage.setItem('accessToken', res.accessToken.toString());
+    } catch (error) {
+      if (retryCount >= 0) this.refreshAccessToken(retryCount - 1);
+      this.logout();
+    }
+  };
 }
