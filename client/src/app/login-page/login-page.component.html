@@ -1,0 +1,17 @@
+<div class="centerContainer">
+  <form
+    class="formBox"
+    [formGroup]="modelForm"
+    (ngSubmit)="onSubmit(modelForm)">
+    <h3>Login</h3>
+    <label for="email">E-mail</label>
+    <input formControlName="email" type="email" name="email" />
+
+    <label for="password">Password</label>
+    <input formControlName="password" type="password" name="password" />
+
+    <a href="/register">You don't have an account? Register now!</a>
+
+    <input type="submit" name="login" value="Submit" on />
+  </form>
+</div>

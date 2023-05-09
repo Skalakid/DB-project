@@ -1,0 +1,47 @@
+GET http://localhost:3000/auth/get/all
+
+################################
+
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "firstName": "Kyle",
+    "lastName": "Metzen",
+    "email": "lol2@lol.pl",
+    "phoneNumber": "123123123",
+    "password": "password"
+}
+
+###
+
+
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "lol@lol.pl",
+    "password": "password"
+}
+
+###
+
+GET http://localhost:3000/auth/validate
+Authorization: Bearer <access_token>
+
+################################
+
+POST http://localhost:3000/auth/refresh/token
+Content-Type: application/json
+
+{
+    "token": "<refresh_token>"
+}
+
+################################
+DELETE http://localhost:3000/auth/logout
+Content-Type: application/json
+
+{
+    "token": "<refresh_token>"
+}

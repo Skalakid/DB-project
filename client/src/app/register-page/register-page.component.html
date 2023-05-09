@@ -1,0 +1,35 @@
+<div class="centerContainer">
+  <form
+    class="formBox"
+    [formGroup]="modelForm"
+    (ngSubmit)="onSubmit(modelForm)">
+    <h3>Register</h3>
+
+    <div class="horizontalBox">
+      <div class="inputContainer">
+        <label for="firstname">Firstname</label>
+        <input formControlName="firstName" type="text" name="firstname" />
+      </div>
+      <div class="inputContainer">
+        <label for="lastname">Lastname</label>
+        <input formControlName="lastName" type="text" name="lastname" />
+      </div>
+    </div>
+
+    <label for="email">E-mail</label>
+    <input formControlName="email" type="email" name="email" />
+
+    <label for="phone">Phone</label>
+    <input formControlName="phoneNumber" type="phone" name="phone" />
+
+    <label for="passwd">Password</label>
+    <input formControlName="password" type="password" name="passwd" />
+
+    <label for="rpasswd">Repeat password</label>
+    <input formControlName="repeatedPassword" type="password" name="rpasswd" />
+
+    <a href="/login">Try loggin in with the existing account!</a>
+
+    <input type="submit" name="login" value="Submit" />
+  </form>
+</div>
