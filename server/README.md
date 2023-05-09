@@ -9,13 +9,17 @@ To run server properly you have to add `.env` file to your server folder. Withou
 3. yarn start
 
 # Endpoints:
+
 ## Auth
+
 ### `/auth/login`
+
 Description: Creates user session
 
 Access token: `false`
 
 Body:
+
 ```
 {
   email: string;
@@ -24,6 +28,7 @@ Body:
 ```
 
 Returns:
+
 ```
 {
   accessToken: string;
@@ -34,4 +39,3 @@ Returns:
   phoneNumber: string;
 }
 ```
-

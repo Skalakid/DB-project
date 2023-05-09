@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import { get, post } from '../api';
 
 @Component({
   selector: 'app-home-page',
@@ -21,5 +22,18 @@ export class HomePageComponent {
 
   logout() {
     this._authService.logout();
+  }
+
+  async validate() {
+    try {
+      const res = await get('/auth/validate', {})();
+      console.log(res);
+    } catch (error) {
+      if (error instanceof Error) console.log(error);
+    }
+  }
+
+  refresh() {
+    this._authService.refreshAccessToken();
   }
 }
