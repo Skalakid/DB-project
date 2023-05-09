@@ -14,7 +14,17 @@ const test = () => {
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'register', component: RegisterPageComponent },
-  { path: '', component: HomePageComponent },
+  { path: 'home', component: HomePageComponent, canActivate: [AuthGuard] },
+  {
+    path: 'my-profile',
+    component: NotFoundPageComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full',
+  },
   { path: '**', component: NotFoundPageComponent, canActivate: [AuthGuard] },
 ];
 
