@@ -1,4 +1,4 @@
-import oracledb from 'oracledb'
+import oracledb from 'oracledb';
 import config from './config';
 
 const params = {
