@@ -26,7 +26,7 @@ const refreshToken = (req: Request, res: Response) => {
       if (err) return res.sendStatus(403);
 
       const userObj = {
-        userId: user.id,
+        userId: user.userId,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
@@ -35,7 +35,6 @@ const refreshToken = (req: Request, res: Response) => {
       };
 
       const accessToken = await generateAccessToken(userObj);
-      console.log(userObj);
       res.json({ accessToken });
     }
   );

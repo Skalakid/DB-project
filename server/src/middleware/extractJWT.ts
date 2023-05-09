@@ -11,15 +11,13 @@ const extractJWT = (req: Request, res: Response, next: NextFunction) => {
       token,
       config.server.tokens.accessTokenSecret,
       (err, decoded) => {
-        if (err)
-          return res.status(404).json({ error: err, message: err.message });
+        if (err) return res.status(403).json({ message: 'Token expired' });
 
         res.locals.jwt = decoded;
         next();
       }
     );
-  }
-  return res.status(401).json({ message: 'Unauthorized' });
+  } else return res.status(401).json({ message: 'Unauthorized' });
 };
 
 export default extractJWT;
