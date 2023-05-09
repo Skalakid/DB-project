@@ -27,6 +27,20 @@ begin
 end;
 /
 
+create procedure add_reservation(u_id int, v_id int, p_duration interval day to second)
+as
+begin
+    if not USER_EXIST_BY_ID(u_id) then
+        raise_application_error(-20001, 'user not found');
+    end if;
+    if  not VEHICLE_EXIST(v_id) then
+        raise_application_error(-20002, 'vehicle not found');
+    end if;
+    insert into RESERVATION(user_id, vehicle_id, r_begin, r_end)
+    values (u_id, v_id, current_date, current_date + p_duration);
+end;
+/
+
 create procedure set_energy_by_value(v_id int, e_lvl int)
 as
 begin
@@ -76,20 +90,6 @@ exception
 end;
 /
 
-create procedure add_reservation(u_id int, v_id int, p_duration interval day to second)
-as
-begin
-    if not USER_EXIST_BY_ID(u_id) then
-        raise_application_error(-20001, 'user not found');
-    end if;
-    if  not VEHICLE_EXIST(v_id) then
-        raise_application_error(-20002, 'vehicle not found');
-    end if;
-    insert into RESERVATION(user_id, vehicle_id, r_begin, r_end)
-    values (u_id, v_id, current_date, current_date + p_duration);
-end;
-/
-
 create procedure add_reservation_with_update(u_id int, v_id int, p_duration interval day to second)
 as
 begin
@@ -104,5 +104,3 @@ begin
     values (u_id, v_id, current_date, current_date + p_duration);
 end;
 /
-
-
