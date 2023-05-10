@@ -5,7 +5,7 @@ import config from '../config/config';
 export const generateAccessToken = async (user: IUser) => {
   try {
     const token = await jwt.sign(user, config.server.tokens.accessTokenSecret, {
-      expiresIn: '15m',
+      expiresIn: '10s',
     });
     if (token) {
       return token;

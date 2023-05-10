@@ -147,9 +147,9 @@ const getAllUsers = async (req: Request, res: Response) => {
 
 export const logout = (req: Request, res: Response) => {
   const { token } = req.body;
-  if (!refreshTokens.includes(token)) return res.status(404);
+  if (!refreshTokens.includes(token)) return res.status(404).json({});
   refreshTokens = refreshTokens.filter(item => item !== token);
-  return res.status(204);
+  return res.status(204).json({});
 };
 
 export default {
