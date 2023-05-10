@@ -26,7 +26,6 @@ export class AuthService {
       await localStorage.setItem('accessToken', res.accessToken);
       await localStorage.setItem('refreshToken', res.refreshToken);
       await localStorage.setItem('user', JSON.stringify(res));
-      console.log(await localStorage.getItem('refreshToken'));
       this.currentUser.next(res);
       this._router.navigate(['/']);
     } catch (error) {
@@ -44,6 +43,7 @@ export class AuthService {
       //
     }
     localStorage.clear();
+    this.currentUser.next(null);
     this._router.navigate(['/login']);
   }
 
