@@ -1,1 +1,20 @@
-<router-outlet></router-outlet>
+<div class="container">
+  <div class="menu">
+    <h3>Goo!</h3>
+    <nav>
+      <app-nav-item text="Map" icon="fa-map" routerLink="/home"></app-nav-item>
+      <app-nav-item
+        text="My profile"
+        icon="fa-user"
+        routerLink="/my-profile"></app-nav-item>
+    </nav>
+    <app-nav-item
+      [style.display]="isLoggedIn ? 'block' : 'none'"
+      icon="fa-sign-out"
+      routerLink="/"
+      (click)="logout()" />
+  </div>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

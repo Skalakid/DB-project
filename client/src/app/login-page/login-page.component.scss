@@ -8,11 +8,19 @@
 
 h3 {
   text-align: center;
-  font-size: 28px;
+  font-size: 32px;
+  color: #e8855e;
 }
 
 a {
   text-align: center;
+  color: #e8855e;
+}
+
+input {
+  padding: 10px 8px;
+  border-radius: 8px;
+  border-width: 0;
 }
 
 .formBox {
@@ -20,12 +28,8 @@ a {
   display: flex;
   flex-direction: column;
   border-radius: 20px;
-  border: 1px solid black;
   padding: 24px;
-}
-
-input {
-  padding: 8px;
+  background-color: #fff3e0;
 }
 
 input[type='submit'],
@@ -36,4 +40,16 @@ a {
 
 .invalid {
   border-color: red;
+}
+
+label {
+  color: #e8855e;
+}
+
+input[type='submit'] {
+  background-color: #d6f5fa;
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  color: #6e9da6;
 }

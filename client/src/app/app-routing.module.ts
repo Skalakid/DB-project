@@ -9,7 +9,17 @@ import { HomePageComponent } from './home-page/home-page.component';
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'register', component: RegisterPageComponent },
-  { path: '', component: HomePageComponent, canActivate: [AuthGuard] },
+  { path: 'home', component: HomePageComponent, canActivate: [AuthGuard] },
+  {
+    path: 'my-profile',
+    component: NotFoundPageComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full',
+  },
   { path: '**', component: NotFoundPageComponent, canActivate: [AuthGuard] },
 ];
 
