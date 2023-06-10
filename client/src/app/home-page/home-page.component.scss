@@ -1,7 +1,218 @@
-.centerContainer {
-  width: 100%;
+.bg {
+  width: 100vw;
   height: 100vh;
+}
+
+.bg img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.content {
+  height: 96vh;
+  width: 90vw;
+
+  position: fixed;
+  left: 9vw;
+  top: 2vh;
+
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: minmax(100px, auto);
+  row-gap: 30px;
+  column-gap: 15px;
+  grid-template-areas:
+    'rentals rentals welcome welcome'
+    'rentals rentals map map'
+    'actual-rental resume map map'
+    'socials resume map map';
+}
+
+.tile {
+  background: rgba(255, 255, 255, 0.24);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(6.2px);
+  -webkit-backdrop-filter: blur(6.2px);
+  border: 1px solid rgba(255, 255, 255, 1);
+  overflow: hidden;
+}
+
+.tile-latest-rentals {
+  grid-area: rentals;
+
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.tile-latest-rentals .text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 10%;
+
+  margin-bottom: 5px;
+
+  font-size: 1.5rem;
+  color: white;
+
+  padding-left: 10px;
+
+  background-color: rgba(200, 200, 200, 0.2);
+}
+
+.tile-latest-rentals .rentals {
+  width: 90%;
+  height: 10%;
+  background-color: rgba(233, 134, 68, 0.5);
+  border: 1px solid rgb(223, 92, 11);
+
+  border-radius: 10px;
+  color: white;
+
+  margin-bottom: 5px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.tile-latest-rentals .rentals .price-box {
+  color: rgb(255, 0, 0);
+}
+
+.tile-latest-rentals .rentals .duration-box {
+  color: #fbdf93;
+}
+
+.tile-latest-rentals .rentals .date-box {
+  color: #fceabb;
+}
+
+.tile-welcome {
+  grid-area: welcome;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tile-welcome p {
+  background: #ffb76b;
+  background: linear-gradient(
+    to right,
+    #e0b280 0%,
+    #ffa73d 30%,
+    #e08631 60%,
+    #ff7f04 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 4rem;
+  overflow-wrap: break-word;
+}
+
+.tile-map {
+  grid-area: map;
+}
+
+.tile-map .map {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 56.25%;
+}
+
+.tile-map .map iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.tile-resume {
+  grid-area: resume;
+
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.tile-resume .content-1 {
+  height: 35%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  font-size: 25px;
+  color: white;
+}
+
+.tile-resume .content-2 {
+  height: 35%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  font-size: 25px;
+  color: white;
+}
+
+.tile-resume .value {
+  background: #ffb76b;
+  background: linear-gradient(
+    to right,
+    #ffb76b 0%,
+    #ffa73d 30%,
+    #ff7c00 60%,
+    #ff7f04 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.tile-actual-rental {
+  grid-area: actual-rental;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tile-actual-rental p {
+  background: #ffb76b;
+  background: linear-gradient(
+    to right,
+    #955511 0%,
+    #e0ad6f 30%,
+    #974e09 60%,
+    #f76409 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.socials {
+  grid-area: socials;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.socials .icon {
+  width: 45%;
+  height: 45%;
+  padding: 12px;
 }

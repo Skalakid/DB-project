@@ -1,7 +1,62 @@
-<div class="centerContainer">
-  <h2>Home page !</h2>
-  <p>Welcome {{ firstName }} {{ lastName }}</p>
-  <button (click)="refresh()">Refresh token</button>
-  <button (click)="validate()">Validate</button>
-  <button (click)="logout()">Logout</button>
+<div class="bg">
+  <img src="assets/bg.jpg" />
+  <div class="content">
+    <div class="tile tile-latest-rentals">
+      <div class="text">
+        <p>Ostatnie wypożyczenia</p>
+      </div>
+      <div class="rentals" *ngFor="let rental of rentals">
+        <div class="date-box">
+          <p>{{ rental.date }}</p>
+        </div>
+        <div class="duration-box">
+          <p>{{ rental.duration }} minut</p>
+        </div>
+        <div class="price-box">
+          <p>{{ rental.price }}zł</p>
+        </div>
+      </div>
+    </div>
+    <div class="tile tile-welcome">
+      <p>
+        Cześć <b>{{ firstName }}</b
+        >!
+      </p>
+    </div>
+    <div class="tile tile-map">
+      <div class="map">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2560.9867805971976!2d19.909212075512883!3d50.06780921484239!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47165ba4e83edb79%3A0x12ec23c8f9c73c78!2sCentrum%20Informatyki%2C%20AGH%2C%20D-17!5e0!3m2!1spl!2spl!4v1686183341375!5m2!1spl!2spl"
+          frameborder="0"
+          style="border: 0"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+
+    <div class="tile tile-resume">
+      <div class="content-1">
+        <p class="text">Jesteś już z nami</p>
+        <p class="value">{{ length }} km!</p>
+      </div>
+      <div class="content-2">
+        <p class="text">Wypożyczyłeś aż</p>
+        <p class="value">{{ amount }} hulajnóg!</p>
+      </div>
+    </div>
+    <div class="tile tile-actual-rental">
+      <p class="true" *ngIf="actual_reservation">
+        Aktualnie wypożyczasz pojazd!
+      </p>
+      <p class="false" *ngIf="!actual_reservation">
+        Brak aktualnych wypożyczeń!
+      </p>
+    </div>
+    <div class="socials">
+      <a href=""><img class="icon" src="assets/facebook.png" /></a>
+      <a href=""><img class="icon" src="assets/instagram.png" /></a>
+      <a href=""><img class="icon" src="assets/twitter.png" /></a>
+    </div>
+  </div>
 </div>

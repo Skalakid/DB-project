@@ -1,0 +1,40 @@
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 8vw;
+  height: 80vh;
+
+  position: fixed;
+  top: 10vh;
+  left: -7vw;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  border-radius: 0 20px 20px 0;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+
+  z-index: 999;
+  transition: left 0.3s ease-out;
+}
+
+.box:hover {
+  left: 0;
+}
+
+.box ul {
+  width: 100%;
+  height: 50%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  list-style: none;
+}
+
+.box ul .icon {
+  width: 35px;
+  height: 35px;
+}
