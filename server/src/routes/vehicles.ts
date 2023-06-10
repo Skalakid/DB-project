@@ -4,6 +4,6 @@ import extractJWT from '../middleware/extractJWT';
 
 const router = express.Router();
 
-router.get('/get/all', extractJWT, controller.getAllAvailableVehicles);
+router.get('/get/all', controller.getAllAvailableVehicles);
 
 export = router;

@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { get, post } from '../api';
 import { Reservation } from '../models/Reservation';
+import { Marker } from '../models/Marker';
+import { VehiclesService } from '../services/vehicles.service';
 
 @Component({
   selector: 'app-home-page',
@@ -12,10 +13,10 @@ export class HomePageComponent {
   @Input() firstName = '';
   @Input() lastName = '';
 
-  length: number = 31.6; // kilometres
-  amount: number = 7; // amount of reservations
+  length = 31.6; // kilometres
+  amount = 7; // amount of reservations
   rentals: Reservation[] = []; // list of all reservations
-  actual_reservation: boolean = false;
+  actual_reservation = false;
 
   rental1: Reservation = {
     date: '08.06.2023',
@@ -31,7 +32,28 @@ export class HomePageComponent {
     price: 17.21,
   };
 
-  constructor(private _authService: AuthService) {}
+  zoom = 12;
+  center: google.maps.LatLngLiteral = { lat: 50.0647, lng: 19.945 };
+  options: google.maps.MapOptions = {
+    disableDoubleClickZoom: true,
+    streetViewControl: false,
+    disableDefaultUI: true,
+    clickableIcons: false,
+  };
+
+  markers: Marker[] = [];
+  markerOptions: google.maps.MarkerOptions = { draggable: false };
+  markerPositions: google.maps.LatLngLiteral[] = [];
+
+  constructor(
+    private _authService: AuthService,
+    private _vehiclesService: VehiclesService
+  ) {
+    this._vehiclesService.avaliableVehicles.subscribe(newMarkers => {
+      console.log(newMarkers);
+      this.markers = newMarkers || [];
+    });
+  }
 
   ngOnInit() {
     this._authService.currentUser.subscribe(val => {
@@ -45,18 +67,5 @@ export class HomePageComponent {
 
   logout() {
     this._authService.logout();
-  }
-
-  async validate() {
-    try {
-      const res = await get('/auth/validate', {})();
-      console.log(res);
-    } catch (error) {
-      if (error instanceof Error) console.log(error);
-    }
-  }
-
-  refresh() {
-    this._authService.refreshAccessToken();
   }
 }

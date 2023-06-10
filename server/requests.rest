@@ -1,4 +1,4 @@
-GET http://localhost:3000/auth/get/all
+GET http://localhost:3000/vehicles/get/all
 
 ################################
 

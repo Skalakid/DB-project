@@ -4,7 +4,7 @@ import extractJWT from '../middleware/extractJWT';
 
 const router = express.Router();
 
-router.get('/get/all', extractJWT, controller.getAllUsers);
+router.get('/get/all', controller.getAllUsers);
 
 router.get('/users/stats', extractJWT, controller.getUserStats);
 

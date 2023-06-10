@@ -3,7 +3,7 @@ import oracle from '../config/oracle';
 
 const getAllAvailableVehicles = async (req: Request, res: Response) => {
   try {
-    const query = `SELECT * FROM available_vehicles`;
+    const query = `SELECT VEHICLE_ID, MODEL_ID, LAT_CORDS, LNG_CORDS, TO_CHAR(DURATION), ENERGY_LEVEL, COST_PER_MINUTE FROM available_vehicles`;
     const conn = await oracle.connect();
     conn?.execute<(string | number)[]>(
       query,
@@ -19,11 +19,12 @@ const getAllAvailableVehicles = async (req: Request, res: Response) => {
         return res.status(201).json(
           result.rows?.map(item => ({
             vehicleId: item[0],
-            latCords: item[1],
-            lngCords: item[2],
-            duration: item[3],
-            energyLevel: item[4],
-            costPerMinute: item[5],
+            modelId: item[1],
+            latCords: item[2],
+            lngCords: item[3],
+            duration: item[4].toString().split(' ')[1],
+            energyLevel: item[5],
+            costPerMinute: item[6],
           }))
         );
       }

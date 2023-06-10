@@ -11,6 +11,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { VehiclesComponent } from './vehicles/vehicles.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    GoogleMapsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
