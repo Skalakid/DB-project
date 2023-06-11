@@ -169,3 +169,16 @@ exception
         return null;
 end;
 /
+
+create or replace function get_user_currently_rented_vehicles(u_id int)
+    return VEHICLE_DATA_TABLE
+as
+    result VEHICLE_DATA_TABLE;
+begin
+    select VEHICLE_DATA(r.VEHICLE_ID, r.MODEL_ID, r.LAT_CORDS, r.LNG_CORDS, r.duration, r.ENERGY_LEVEL, r.COST_PER_MINUTE)
+    bulk collect into result
+    from RENTED_VEHICLES r
+    where USER_ID = u_id;
+    return result;
+end;
+/

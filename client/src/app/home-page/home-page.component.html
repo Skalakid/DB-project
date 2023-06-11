@@ -18,19 +18,36 @@
       </div>
     </div>
     <div class="tile tile-welcome">
-      <p *ngIf="selectedMarker === null">
+      <p *ngIf="selectedMarker === null && selectedRentedMarker === null">
         Cześć <b>{{ firstName }}</b
         >!
       </p>
 
-      <div class="selected-vehicle" *ngIf="selectedMarker !== null">
+      <div
+        class="selected-vehicle"
+        *ngIf="selectedMarker !== null || selectedRentedMarker !== null">
         <div class="selected-vehicle-info">
-          <p>ID: {{ selectedMarker.vehicleId }}</p>
-          <p>Model: {{ selectedMarker.modelId }}</p>
-          <p>Stan baterii: {{ selectedMarker.energyLevel }}</p>
+          <p>
+            ID:
+            {{ selectedRentedMarker?.vehicleId || selectedMarker?.vehicleId }}
+          </p>
+          <p>
+            Model:
+            {{ selectedRentedMarker?.modelId || selectedMarker?.modelId }}
+          </p>
+          <p>
+            Stan baterii:
+            {{
+              selectedRentedMarker?.energyLevel || selectedMarker?.energyLevel
+            }}
+          </p>
         </div>
 
-        <button (click)="makeReservation()">Zarezerwuj</button>
+        <button
+          [disabled]="isMoving"
+          (click)="selectedRentedMarker !== null ? move() : makeReservation()">
+          {{ selectedRentedMarker !== null ? 'Przemieść' : 'Zarezerwuj' }}
+        </button>
       </div>
     </div>
     <div class="tile tile-map">
@@ -40,7 +57,8 @@
           width="100%"
           [zoom]="zoom"
           [center]="center"
-          [options]="options">
+          [options]="options"
+          (mapClick)="mapClick($event)">
           <map-marker
             *ngFor="let marker of markers; let i = index"
             [position]="{ lat: marker.latCords, lng: marker.lngCords }"
@@ -51,8 +69,20 @@
                 ? selectedMarkerOptions
                 : markerOptions
             "
-            [label]="marker.energyLevel.toString()"
             (mapClick)="selectMarker(i)">
+          </map-marker>
+
+          <map-marker
+            *ngFor="let marker of rentedMarkers; let i = index"
+            [position]="{ lat: marker.latCords, lng: marker.lngCords }"
+            [title]="marker.vehicleId.toString()"
+            [options]="
+              selectedRentedMarker !== null &&
+              selectedRentedMarker.vehicleId === marker.vehicleId
+                ? selectedRentedMarkerOptions
+                : rentedMarkerOptions
+            "
+            (mapClick)="selectRentedMarker(i)">
           </map-marker>
         </google-map>
       </div>

@@ -11,6 +11,7 @@ import { UserService } from './user.service';
 })
 export class VehiclesService {
   avaliableVehicles = new BehaviorSubject<Marker[] | null>(null);
+  rentedVehicles = new BehaviorSubject<Marker[] | null>(null);
   currentReservations = new BehaviorSubject<Reservation[] | null>(null);
   reservations = new BehaviorSubject<Reservation[] | null>(null);
   userId: number | null = null;
@@ -27,6 +28,7 @@ export class VehiclesService {
 
   refresh() {
     this.getAvaliableVehicles();
+    this.getRentedVehicles();
     this.getUserCurrentReservations();
     this.getUserAllReservations();
     this._userService.refresh();
@@ -36,6 +38,19 @@ export class VehiclesService {
     try {
       const res = await get('/vehicles/get/all', {})();
       this.avaliableVehicles.next(res);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
+  }
+
+  async getRentedVehicles() {
+    try {
+      const res = await get('/vehicles/get/rented/user', {
+        userId: this.userId,
+      })();
+      this.rentedVehicles.next(res);
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
@@ -75,6 +90,21 @@ export class VehiclesService {
         userId,
         vehicleId,
         duration,
+      })();
+      this.refresh();
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
+  }
+
+  async updatePosition(vehicleId: number, lat: number, lng: number) {
+    try {
+      const res = await post('/vehicles//update/position', {
+        vehicleId,
+        lat,
+        lng,
       })();
       this.refresh();
     } catch (error) {

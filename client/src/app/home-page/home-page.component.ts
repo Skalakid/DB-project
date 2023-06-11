@@ -32,21 +32,53 @@ export class HomePageComponent {
     clickableIcons: false,
   };
 
+  normalIcon = {
+    url: '../../assets/mark.png',
+    scaledSize: new google.maps.Size(50, 50),
+  };
+
+  rentedIcon = {
+    url: '../../assets/mark1.png',
+    scaledSize: new google.maps.Size(50, 50),
+  };
+
+  selectedIcon = {
+    url: '../../assets/mark2.png',
+    scaledSize: new google.maps.Size(50, 50),
+  };
+
   markers: Marker[] = [];
+  rentedMarkers: Marker[] = [];
+
   markerOptions: google.maps.MarkerOptions = {
     draggable: false,
     animation: null,
+    icon: this.normalIcon,
+  };
+  rentedMarkerOptions: google.maps.MarkerOptions = {
+    draggable: false,
+    animation: null,
+    icon: this.rentedIcon,
   };
   selectedMarkerOptions: google.maps.MarkerOptions = {
     draggable: false,
     animation: google.maps.Animation.BOUNCE,
+    icon: this.selectedIcon,
   };
+  selectedRentedMarkerOptions: google.maps.MarkerOptions = {
+    draggable: false,
+    animation: google.maps.Animation.BOUNCE,
+    icon: this.rentedIcon,
+  };
+
   markerPositions: google.maps.LatLngLiteral[] = [];
   selectedMarker: Marker | null = null;
+  selectedRentedMarker: Marker | null = null;
   reservations: Reservation[] = [];
   currentReservations: Reservation[] = [];
 
   stats: UserStats | null = null;
+  isMoving = false;
 
   constructor(
     private _authService: AuthService,
@@ -55,6 +87,10 @@ export class HomePageComponent {
   ) {
     this._vehiclesService.avaliableVehicles.subscribe(newMarkers => {
       this.markers = newMarkers || [];
+    });
+
+    this._vehiclesService.rentedVehicles.subscribe(markers => {
+      this.rentedMarkers = markers || [];
     });
 
     this._vehiclesService.reservations.subscribe(reservations => {
@@ -86,7 +122,38 @@ export class HomePageComponent {
   }
 
   selectMarker(index: number) {
-    this.selectedMarker = this.markers[index];
+    if (!this.isMoving) {
+      if (this.markers?.[index]) this.selectedMarker = this.markers[index];
+      else this.selectedMarker = null;
+      this.selectedRentedMarker = null;
+    }
+  }
+
+  selectRentedMarker(index: number) {
+    if (!this.isMoving) {
+      if (this.rentedMarkers?.[index])
+        this.selectedRentedMarker = this.rentedMarkers[index];
+      this.selectedMarker = null;
+    }
+  }
+
+  mapClick(event: google.maps.MapMouseEvent) {
+    console.log();
+    if (this.isMoving) {
+      if (
+        this.selectedRentedMarker?.vehicleId &&
+        event.latLng?.lat &&
+        event.latLng?.lng
+      )
+        this._vehiclesService.updatePosition(
+          this.selectedRentedMarker?.vehicleId,
+          event.latLng?.lat(),
+          event.latLng?.lng()
+        );
+      this.isMoving = false;
+    }
+    this.selectedMarker = null;
+    this.selectedRentedMarker = null;
   }
 
   makeReservation() {
@@ -95,6 +162,11 @@ export class HomePageComponent {
     if (userID && vehicleID) {
       this._vehiclesService.makeReservation(userID, vehicleID, '+0 00:05:00');
     }
+    this.selectedMarker = null;
+  }
+
+  move() {
+    this.isMoving = true;
   }
 
   formatDate(dateString: string) {
