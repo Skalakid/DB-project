@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/get/all', controller.getAllUsers);
 
-router.get('/stats', extractJWT, controller.getUserStats);
+router.get('/stats', controller.getUserStats);
 
 router.get('/reservations/all', controller.getUserReservations);
 

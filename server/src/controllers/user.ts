@@ -39,33 +39,23 @@ const getUserStats = async (req: Request, res: Response) => {
     if (!userId) throw new Error('Invalid argumnet');
     const query = `SELECT * FROM TABLE(get_user_info(${userId}))`;
     const conn = await oracle.connect();
-    conn?.execute<(string | number)[]>(
-      query,
-      [],
-      { autoCommit: true },
-      async (error, result) => {
-        if (error) {
-          return res.status(500).json({
-            message: error.message,
-            error,
+    conn?.execute<(string | number)[]>(query, [], {}, async (error, result) => {
+      if (error) {
+        return res.status(500).json({
+          message: error.message,
+          error,
+        });
+      } else {
+        const users = result.rows;
+        if (users && users?.length == 1) {
+          const user = users[0];
+          return res.status(201).json({
+            noReservations: user[5],
+            totalCost: user[6],
           });
-        } else {
-          const users = result.rows;
-          if (users && users?.length == 1) {
-            const user = users[0];
-            return res.status(201).json({
-              userId: user[0],
-              firstname: user[1],
-              lastname: user[2],
-              email: user[3],
-              phone: user[4],
-              noReservations: user[5],
-              totalCost: user[6],
-            });
-          } else return res.status(401).json('Cound not get current user data');
-        }
+        } else return res.status(401).json('Cound not get current user data');
       }
-    );
+    });
   } catch (error) {
     if (error instanceof Error)
       return res.status(500).json({

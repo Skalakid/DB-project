@@ -61,3 +61,8 @@ Content-Type: application/json
 ################
 
 GET http://localhost:3000/users/reservations/current?userId=121
+
+
+###############
+
+GET http://localhost:3000/users/stats?userId=121
