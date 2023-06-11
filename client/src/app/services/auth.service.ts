@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   currentUser = new BehaviorSubject<User | null>(null);
+  currentUserStats = new BehaviorSubject<User | null>(null);
+
   constructor(private _router: Router) {
     const user = localStorage.getItem('user');
     if (user) {

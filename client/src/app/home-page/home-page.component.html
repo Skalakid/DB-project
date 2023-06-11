@@ -5,23 +5,33 @@
       <div class="text">
         <p>Ostatnie wypożyczenia</p>
       </div>
-      <div class="rentals" *ngFor="let rental of rentals">
+      <div class="rentals" *ngFor="let reservation of reservations">
         <div class="date-box">
-          <p>{{ rental.date }}</p>
+          <p>{{ formatDate(reservation.r_end) }}</p>
         </div>
         <div class="duration-box">
-          <p>{{ rental.duration }} minut</p>
+          <p>{{ reservation.duration }}</p>
         </div>
         <div class="price-box">
-          <p>{{ rental.price }}zł</p>
+          <p>{{ reservation.cost }}zł</p>
         </div>
       </div>
     </div>
     <div class="tile tile-welcome">
-      <p>
+      <p *ngIf="selectedMarker === null">
         Cześć <b>{{ firstName }}</b
         >!
       </p>
+
+      <div class="selected-vehicle" *ngIf="selectedMarker !== null">
+        <div class="selected-vehicle-info">
+          <p>ID: {{ selectedMarker.vehicleId }}</p>
+          <p>Model: {{ selectedMarker.modelId }}</p>
+          <p>Stan baterii: {{ selectedMarker.energyLevel }}</p>
+        </div>
+
+        <button (click)="makeReservation()">Zarezerwuj</button>
+      </div>
     </div>
     <div class="tile tile-map">
       <div class="map">
@@ -32,13 +42,19 @@
           [center]="center"
           [options]="options">
           <map-marker
-            *ngFor="let marker of markers"
+            *ngFor="let marker of markers; let i = index"
             [position]="{ lat: marker.latCords, lng: marker.lngCords }"
             [title]="marker.modelId"
-            [options]="markerOptions"
-            [label]="marker.energyLevel.toString()">
-          </map-marker
-        ></google-map>
+            [options]="
+              selectedMarker !== null &&
+              marker.vehicleId === selectedMarker.vehicleId
+                ? selectedMarkerOptions
+                : markerOptions
+            "
+            [label]="marker.energyLevel.toString()"
+            (mapClick)="selectMarker(i)">
+          </map-marker>
+        </google-map>
       </div>
     </div>
 
@@ -53,12 +69,16 @@
       </div>
     </div>
     <div class="tile tile-actual-rental">
-      <p class="true" *ngIf="actual_reservation">
-        Aktualnie wypożyczasz pojazd!
-      </p>
-      <p class="false" *ngIf="!actual_reservation">
+      <p *ngIf="currentReservations.length === 0">
         Brak aktualnych wypożyczeń!
       </p>
+      <div
+        class="current-reservation"
+        *ngFor="let reservation of currentReservations; let i = index">
+        <p>{{ i + 1 }}</p>
+        <p>{{ reservation.vehicleId }}</p>
+        <p>Do: {{ reservation.r_end }}</p>
+      </div>
     </div>
     <div class="socials">
       <a href=""><img class="icon" src="assets/facebook.png" /></a>

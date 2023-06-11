@@ -3,6 +3,9 @@ import { AuthService } from '../services/auth.service';
 import { Reservation } from '../models/Reservation';
 import { Marker } from '../models/Marker';
 import { VehiclesService } from '../services/vehicles.service';
+import { getDateTime } from '../date';
+import { formatDistance, format } from 'date-fns';
+import { pl } from 'date-fns/locale';
 
 @Component({
   selector: 'app-home-page',
@@ -18,20 +21,6 @@ export class HomePageComponent {
   rentals: Reservation[] = []; // list of all reservations
   actual_reservation = false;
 
-  rental1: Reservation = {
-    date: '08.06.2023',
-    time: '13:23',
-    duration: 2.32,
-    price: 12.32,
-  };
-
-  rental2: Reservation = {
-    date: '12.05.2023',
-    time: '23:02',
-    duration: 5.12,
-    price: 17.21,
-  };
-
   zoom = 12;
   center: google.maps.LatLngLiteral = { lat: 50.0647, lng: 19.945 };
   options: google.maps.MapOptions = {
@@ -42,16 +31,43 @@ export class HomePageComponent {
   };
 
   markers: Marker[] = [];
-  markerOptions: google.maps.MarkerOptions = { draggable: false };
+  markerOptions: google.maps.MarkerOptions = {
+    draggable: false,
+    animation: null,
+  };
+  selectedMarkerOptions: google.maps.MarkerOptions = {
+    draggable: false,
+    animation: google.maps.Animation.BOUNCE,
+  };
   markerPositions: google.maps.LatLngLiteral[] = [];
+  selectedMarker: Marker | null = null;
+  reservations: Reservation[] = [];
+  currentReservations: Reservation[] = [];
 
   constructor(
     private _authService: AuthService,
     private _vehiclesService: VehiclesService
   ) {
     this._vehiclesService.avaliableVehicles.subscribe(newMarkers => {
-      console.log(newMarkers);
       this.markers = newMarkers || [];
+    });
+
+    this._vehiclesService.reservations.subscribe(reservations => {
+      this.reservations =
+        reservations?.map(res => ({
+          ...res,
+          duration: formatDistance(new Date(res.r_begin), new Date(res.r_end), {
+            locale: pl,
+          }),
+        })) || [];
+    });
+
+    this._vehiclesService.currentReservations.subscribe(reservations => {
+      this.currentReservations =
+        reservations?.map(res => ({
+          ...res,
+          r_end: getDateTime(new Date(res.r_end)),
+        })) || [];
     });
   }
 
@@ -60,9 +76,22 @@ export class HomePageComponent {
       this.firstName = val?.firstName || '';
       this.lastName = val?.lastName || '';
     });
+  }
 
-    this.rentals.push(this.rental1);
-    this.rentals.push(this.rental2);
+  selectMarker(index: number) {
+    this.selectedMarker = this.markers[index];
+  }
+
+  makeReservation() {
+    const userID = this._authService.currentUser.value?.userId;
+    const vehicleID = this.selectedMarker?.vehicleId;
+    if (userID && vehicleID) {
+      this._vehiclesService.makeReservation(userID, vehicleID, '+0 00:05:00');
+    }
+  }
+
+  formatDate(dateString: string) {
+    return format(new Date(dateString), 'yyyy-MM-dd');
   }
 
   logout() {

@@ -22,7 +22,7 @@ const getAllAvailableVehicles = async (req: Request, res: Response) => {
             modelId: item[1],
             latCords: item[2],
             lngCords: item[3],
-            duration: item[4].toString().split(' ')[1],
+            duration: item[4],
             energyLevel: item[5],
             costPerMinute: item[6],
           }))

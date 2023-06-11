@@ -35,9 +35,9 @@ const getAllUsers = async (req: Request, res: Response) => {
 
 const getUserStats = async (req: Request, res: Response) => {
   try {
-    const { userID } = req.query;
-    if (!userID) throw new Error('Invalid argumnet');
-    const query = `begin get_user_info('${userID}'); end;`;
+    const { userId } = req.query;
+    if (!userId) throw new Error('Invalid argumnet');
+    const query = `SELECT * FROM TABLE(get_user_info(${userId}))`;
     const conn = await oracle.connect();
     conn?.execute<(string | number)[]>(
       query,
@@ -77,9 +77,9 @@ const getUserStats = async (req: Request, res: Response) => {
 
 const getUserReservations = async (req: Request, res: Response) => {
   try {
-    const { userID } = req.query;
-    if (!userID) throw new Error('Invalid argumnet');
-    const query = `begin SELECT * FROM get_user_all_reservations('${userID}'); end;`;
+    const { userId } = req.query;
+    if (!userId) throw new Error('Invalid argumnet');
+    const query = `SELECT * FROM TABLE(get_user_all_reservations(${userId}))`;
     const conn = await oracle.connect();
     conn?.execute<(string | number)[]>(
       query,
@@ -93,14 +93,21 @@ const getUserReservations = async (req: Request, res: Response) => {
           });
         } else {
           return res.status(201).json(
-            result.rows?.map(item => ({
-              userId: item[0],
-              reservationId: item[1],
-              vehicleId: item[2],
-              r_begin: item[3],
-              r_end: item[4],
-              cost: item[5],
-            }))
+            result.rows
+              ?.map(item => ({
+                userId: item[0],
+                reservationId: item[1],
+                vehicleId: item[2],
+                r_begin: item[3],
+                r_end: item[4],
+                cost: item[5],
+              }))
+              .sort((a, b) =>
+                new Date(a.r_begin).getTime() - new Date(b.r_begin).getTime() >
+                0
+                  ? -1
+                  : 1
+              )
           );
         }
       }
@@ -116,39 +123,32 @@ const getUserReservations = async (req: Request, res: Response) => {
 
 const getUserCurrentReservations = async (req: Request, res: Response) => {
   try {
-    const { userID } = req.query;
-    if (!userID) throw new Error('Invalid argumnet');
-    const query = `begin SELECT * FROM get_user_current_reservations('${userID}'); end;`;
+    const { userId } = req.query;
+    if (!userId) throw new Error('Invalid argumnet');
+    const query = `SELECT * FROM TABLE(get_user_current_reservations(${userId}))`;
     const conn = await oracle.connect();
-    conn?.execute<(string | number)[]>(
-      query,
-      [],
-      { autoCommit: true },
-      async (error, result) => {
-        if (error) {
-          return res.status(500).json({
-            message: error.message,
-            error,
-          });
+    conn?.execute<(string | number)[]>(query, [], {}, async (error, result) => {
+      if (error) {
+        return res.status(500).json({
+          message: error.message,
+          error,
+        });
+      } else {
+        const reservations = result.rows;
+        if (reservations && reservations?.length > 0) {
+          return res.status(201).json(
+            result.rows?.map(item => ({
+              reservationId: item[0],
+              vehicleId: item[1],
+              r_begin: item[2],
+              r_end: item[3],
+            }))
+          );
         } else {
-          const reservations = result.rows;
-          if (reservations && reservations?.length > 0) {
-            return res.status(201).json(
-              result.rows?.map(item => ({
-                userId: item[0],
-                reservationId: item[1],
-                vehicleId: item[2],
-                r_begin: item[3],
-                r_end: item[4],
-                cost: item[5],
-              }))
-            );
-          } else {
-            return res.status(202).json('No reservations found');
-          }
+          return res.status(202).json([]);
         }
       }
-    );
+    });
   } catch (error) {
     if (error instanceof Error)
       return res.status(500).json({

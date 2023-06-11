@@ -45,3 +45,19 @@ Content-Type: application/json
 {
     "token": "<refresh_token>"
 }
+
+
+##########################
+
+POST http://localhost:3000/users/reservations/add
+Content-Type: application/json
+
+{
+    "userId": 121,
+    "vehicleId": 22,
+    "duration": "+0 00:00:01"
+}
+
+################
+
+GET http://localhost:3000/users/reservations/current?userId=121
