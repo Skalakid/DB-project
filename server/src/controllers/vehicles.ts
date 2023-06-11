@@ -85,7 +85,7 @@ const updateVehiclePosition = async (req: Request, res: Response) => {
       {
         autoCommit: true,
       },
-      async (error, result) => {
+      async error => {
         if (error) {
           return res.status(501).json({
             message: error.message,

@@ -52,39 +52,7 @@
     </div>
     <div class="tile tile-map">
       <div class="map">
-        <google-map
-          height="100%"
-          width="100%"
-          [zoom]="zoom"
-          [center]="center"
-          [options]="options"
-          (mapClick)="mapClick($event)">
-          <map-marker
-            *ngFor="let marker of markers; let i = index"
-            [position]="{ lat: marker.latCords, lng: marker.lngCords }"
-            [title]="marker.modelId"
-            [options]="
-              selectedMarker !== null &&
-              marker.vehicleId === selectedMarker.vehicleId
-                ? selectedMarkerOptions
-                : markerOptions
-            "
-            (mapClick)="selectMarker(i)">
-          </map-marker>
-
-          <map-marker
-            *ngFor="let marker of rentedMarkers; let i = index"
-            [position]="{ lat: marker.latCords, lng: marker.lngCords }"
-            [title]="marker.vehicleId.toString()"
-            [options]="
-              selectedRentedMarker !== null &&
-              selectedRentedMarker.vehicleId === marker.vehicleId
-                ? selectedRentedMarkerOptions
-                : rentedMarkerOptions
-            "
-            (mapClick)="selectRentedMarker(i)">
-          </map-marker>
-        </google-map>
+        <app-map></app-map>
       </div>
     </div>
 
