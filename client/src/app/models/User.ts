@@ -8,3 +8,8 @@ export interface User {
   phoneNumber: string;
   password: string;
 }
+
+export interface UserStats {
+  noReservations: number;
+  totalCost: number;
+}

@@ -60,12 +60,12 @@
 
     <div class="tile tile-resume">
       <div class="content-1">
-        <p class="text">Jesteś już z nami</p>
-        <p class="value">{{ length }} km!</p>
+        <p class="text">Obecne koszta:</p>
+        <p class="value">{{ stats?.totalCost || '-' }} zł</p>
       </div>
       <div class="content-2">
         <p class="text">Wypożyczyłeś aż</p>
-        <p class="value">{{ amount }} hulajnóg!</p>
+        <p class="value">{{ stats?.noReservations || '-' }} hulajnóg!</p>
       </div>
     </div>
     <div class="tile tile-actual-rental">

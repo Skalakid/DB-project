@@ -1,5 +1,3 @@
-import { formatDistance } from 'date-fns';
-
 export const getDateTime = (date: Date) => {
   const h = date.getHours();
   const min = date.getMinutes();

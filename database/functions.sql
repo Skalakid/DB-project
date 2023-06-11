@@ -40,18 +40,21 @@ exception
 end;
 /
 
-create function get_user_info(u_id int)
-    return USERS_INFO%rowtype
-as
-    result USERS_INFO%rowtype;
-begin
-    select * into result from USERS_INFO where USER_ID = u_id;
+CREATE OR REPLACE FUNCTION get_user_info(u_id INT)
+    RETURN USER_STATS_TABLE
+AS
+    result USER_STATS_TABLE;
+BEGIN
+    select USER_STATS(u.USER_ID, u.FIRSTNAME, u.LASTNAME, u.E_MAIL, u.PHONE, u.NO_RESERVATIONS, u.TOTAL_COST)
+    bulk collect into result
+    from USERS_INFO u
+    where USER_ID = u_id;
     return result;
-exception
-    when NO_DATA_FOUND then
-        raise_application_error(-20001, 'user not found');
-        return null;
-end;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'user not found');
+        RETURN null;
+END;
 /
 
 create function get_user_all_reservations(u_id int)

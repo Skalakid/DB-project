@@ -6,6 +6,8 @@ import { VehiclesService } from '../services/vehicles.service';
 import { getDateTime } from '../date';
 import { formatDistance, format } from 'date-fns';
 import { pl } from 'date-fns/locale';
+import { UserStats } from '../models/User';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-home-page',
@@ -44,9 +46,12 @@ export class HomePageComponent {
   reservations: Reservation[] = [];
   currentReservations: Reservation[] = [];
 
+  stats: UserStats | null = null;
+
   constructor(
     private _authService: AuthService,
-    private _vehiclesService: VehiclesService
+    private _vehiclesService: VehiclesService,
+    private _userService: UserService
   ) {
     this._vehiclesService.avaliableVehicles.subscribe(newMarkers => {
       this.markers = newMarkers || [];
@@ -69,9 +74,11 @@ export class HomePageComponent {
           r_end: getDateTime(new Date(res.r_end)),
         })) || [];
     });
-  }
 
-  ngOnInit() {
+    this._userService.currentUserStats.subscribe(res => {
+      this.stats = res;
+    });
+
     this._authService.currentUser.subscribe(val => {
       this.firstName = val?.firstName || '';
       this.lastName = val?.lastName || '';

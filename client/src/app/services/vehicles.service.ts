@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { GoogleMarker, Marker } from '../models/Marker';
+import { Marker } from '../models/Marker';
 import { get, post } from '../api';
 import { AuthService } from './auth.service';
 import { Reservation } from '../models/Reservation';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,10 @@ export class VehiclesService {
   reservations = new BehaviorSubject<Reservation[] | null>(null);
   userId: number | null = null;
 
-  constructor(private _authService: AuthService) {
+  constructor(
+    private _authService: AuthService,
+    private _userService: UserService
+  ) {
     this._authService.currentUser.subscribe(currentUser => {
       this.userId = currentUser?.userId || null;
     });
@@ -25,6 +29,7 @@ export class VehiclesService {
     this.getAvaliableVehicles();
     this.getUserCurrentReservations();
     this.getUserAllReservations();
+    this._userService.refresh();
   }
 
   async getAvaliableVehicles() {
@@ -56,7 +61,6 @@ export class VehiclesService {
       const res = await get('/users/reservations/all', {
         userId: this.userId,
       })();
-      console.log(res);
       this.reservations.next(res);
     } catch (error) {
       if (error instanceof Error) {
@@ -72,7 +76,6 @@ export class VehiclesService {
         vehicleId,
         duration,
       })();
-      console.log(res);
       this.refresh();
     } catch (error) {
       if (error instanceof Error) {
