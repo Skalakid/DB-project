@@ -182,3 +182,22 @@ begin
     return result;
 end;
 /
+
+create or replace function get_reservation_cost(v_id int, p_duration interval day to second)
+    return real
+as
+    minutes int;
+    cost real;
+begin
+    if not VEHICLE_EXIST(v_id) then
+        raise_application_error(-20002, 'vehicle not found');
+    end if;
+    minutes := (extract(day from p_duration) * 24 * 60 +
+                extract(hour from p_duration) * 60 +
+                extract(minute from p_duration));
+    if extract(second from p_duration) > 0 then
+        minutes := minutes + 1;
+    end if;
+    select v.COST_PER_MINUTE into cost from VEHICLE v where v.VEHICLE_ID = v_id;
+    return cost * minutes;
+end;
