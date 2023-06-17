@@ -86,7 +86,7 @@ export class VehiclesService {
 
   async makeReservation(userId: number, vehicleId: number, duration: string) {
     try {
-      const res = await post('/users/reservations/add', {
+      await post('/users/reservations/add', {
         userId,
         vehicleId,
         duration,
@@ -101,7 +101,7 @@ export class VehiclesService {
 
   async updatePosition(vehicleId: number, lat: number, lng: number) {
     try {
-      const res = await post('/vehicles//update/position', {
+      await post('/vehicles//update/position', {
         vehicleId,
         lat,
         lng,

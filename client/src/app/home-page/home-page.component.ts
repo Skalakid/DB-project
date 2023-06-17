@@ -91,6 +91,10 @@ export class HomePageComponent {
     this._mapService.isMoving.next(true);
   }
 
+  selectOnMap(index: number) {
+    this._mapService.selectRentedMarker(index);
+  }
+
   logout() {
     this._authService.logout();
   }

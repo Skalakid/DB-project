@@ -74,35 +74,32 @@ export class MapComponent {
     private _vehiclesService: VehiclesService,
     private _mapService: MapService
   ) {
-    this._vehiclesService.avaliableVehicles.subscribe(newMarkers => {
+    this._mapService.markers.subscribe(newMarkers => {
       this.markers = newMarkers || [];
     });
 
-    this._vehiclesService.rentedVehicles.subscribe(markers => {
+    this._mapService.rentedMarkers.subscribe(markers => {
       this.rentedMarkers = markers || [];
     });
 
     this._mapService.isMoving.subscribe(val => (this.isMoving = val));
+
+    this._mapService.selectedMarker.subscribe(
+      val => (this.selectedMarker = val)
+    );
+
+    this._mapService.selectedRentedMarker.subscribe(
+      val => (this.selectedRentedMarker = val)
+    );
   }
 
   selectMarker(index: number) {
-    if (!this.isMoving) {
-      if (this.markers?.[index]) this.selectedMarker = this.markers[index];
-      else this.selectedMarker = null;
-      this.selectedRentedMarker = null;
-    }
-
-    this._mapService.update(this.selectedMarker, this.selectedRentedMarker);
+    this._mapService.selectMarker(index);
+    console.log('HAHAH', this.selectedMarker);
   }
 
   selectRentedMarker(index: number) {
-    if (!this.isMoving) {
-      if (this.rentedMarkers?.[index])
-        this.selectedRentedMarker = this.rentedMarkers[index];
-      this.selectedMarker = null;
-    }
-
-    this._mapService.update(this.selectedMarker, this.selectedRentedMarker);
+    this._mapService.selectRentedMarker(index);
   }
 
   mapClick(event: google.maps.MapMouseEvent) {
@@ -120,8 +117,9 @@ export class MapComponent {
         );
       this._mapService.isMoving.next(false);
     }
-    this.selectedMarker = null;
-    this.selectedRentedMarker = null;
+
+    this._mapService.selectedMarker.next(null);
+    this._mapService.selectedRentedMarker.next(null);
   }
 
   logout() {

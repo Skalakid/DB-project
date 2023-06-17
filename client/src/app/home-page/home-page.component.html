@@ -5,14 +5,27 @@
       <div class="text">
         <p>Ostatnie wypożyczenia</p>
       </div>
+
+      <div class="rentals">
+        <div class="box">
+          <p>Data</p>
+        </div>
+        <div class="box">
+          <p>Czas trwania</p>
+        </div>
+        <div class="box">
+          <p>Cena</p>
+        </div>
+      </div>
+
       <div class="rentals" *ngFor="let reservation of reservations">
-        <div class="date-box">
+        <div class="box date-box">
           <p>{{ formatDate(reservation.r_end) }}</p>
         </div>
-        <div class="duration-box">
+        <div class="box duration-box">
           <p>{{ reservation.duration }}</p>
         </div>
-        <div class="price-box">
+        <div class="box price-box">
           <p>{{ reservation.cost }}zł</p>
         </div>
       </div>
@@ -44,6 +57,7 @@
         </div>
 
         <button
+          class="button"
           [disabled]="isMoving"
           (click)="selectedRentedMarker !== null ? move() : makeReservation()">
           {{ selectedRentedMarker !== null ? 'Przemieść' : 'Zarezerwuj' }}
@@ -70,12 +84,24 @@
       <p *ngIf="currentReservations.length === 0">
         Brak aktualnych wypożyczeń!
       </p>
+      <p class="title" *ngIf="currentReservations.length !== 0">
+        Ostatnie wypożyczenia
+      </p>
       <div
+        disabled
         class="current-reservation"
-        *ngFor="let reservation of currentReservations; let i = index">
+        *ngIf="currentReservations.length !== 0">
+        <p>Nr.</p>
+        <p>ID</p>
+        <p>Do:</p>
+      </div>
+      <div
+        class="current-reservation-hoverable"
+        *ngFor="let reservation of currentReservations; let i = index"
+        (click)="selectOnMap(i)">
         <p>{{ i + 1 }}</p>
         <p>{{ reservation.vehicleId }}</p>
-        <p>Do: {{ reservation.r_end }}</p>
+        <p>{{ reservation.r_end }}</p>
       </div>
     </div>
     <div class="socials">

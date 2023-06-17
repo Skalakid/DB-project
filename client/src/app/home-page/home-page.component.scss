@@ -82,6 +82,8 @@
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
+
+  padding: 10px;
 }
 
 .tile-latest-rentals .rentals .price-box {
@@ -228,15 +230,18 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  padding: 20px;
+
 }
 
 .selected-vehicle-info > p {
   font-size: 16px;
+  font-weight: 600;
   line-height: normal;
 }
 
-.current-reservation {
-  width: 90%;
+.current-reservation, .current-reservation-hoverable {
+  width: 80%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -248,9 +253,33 @@
   margin-bottom: 5px;
   padding-bottom: 0;
   padding: 10px;
+  transition: 0.3s;
+
+}
+.current-reservation-hoverable {
+  cursor: pointer;
 }
 
-.current-reservation > p {
+
+.current-reservation-hoverable:hover {
+  background-color: rgb(223, 92, 11);
+}
+
+.current-reservation > p, .current-reservation-hoverable > p {
   -webkit-text-fill-color: white;
   color: white;
+  font-size: 16px;
+  width: 100%;
+
+}
+
+.title {
+  margin-bottom: 10px;
+}
+
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
 }
