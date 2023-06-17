@@ -56,12 +56,26 @@
           </p>
         </div>
 
-        <button
-          class="button"
-          [disabled]="isMoving"
-          (click)="selectedRentedMarker !== null ? move() : makeReservation()">
-          {{ selectedRentedMarker !== null ? 'Przemieść' : 'Zarezerwuj' }}
-        </button>
+        <div class="right-side">
+          <select
+            #duration
+            *ngIf="selectedRentedMarker === null"
+            (change)="onTimeChange(duration.value)"
+            (click)="onTimeChange(duration.value)">
+            <option>5 min</option>
+            <option>10 min</option>
+            <option>15 min</option>
+          </select>
+
+          <button
+            class="button"
+            [disabled]="isMoving"
+            (click)="
+              selectedRentedMarker !== null ? move() : makeReservation()
+            ">
+            {{ selectedRentedMarker !== null ? 'Przemieść' : 'Zarezerwuj' }}
+          </button>
+        </div>
       </div>
     </div>
     <div class="tile tile-map">
@@ -73,7 +87,7 @@
     <div class="tile tile-resume">
       <div class="content-1">
         <p class="text">Obecne koszta:</p>
-        <p class="value">{{ stats?.totalCost || '-' }} zł</p>
+        <p class="value">{{ getPrice() || '-' }} zł</p>
       </div>
       <div class="content-2">
         <p class="text">Wypożyczyłeś aż</p>

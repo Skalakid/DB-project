@@ -188,10 +188,12 @@
 
 .tile-actual-rental {
   grid-area: actual-rental;
+
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
+  align-items: center;
+  overflow: auto;
+  overflow-x: hidden;
 }
 
 .tile-actual-rental p {
@@ -282,4 +284,12 @@
   align-items: center;
   justify-content: center;
   flex: 1;
+}
+
+select {
+  margin-right: 16px;
+  width: 100px;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 16px;
 }

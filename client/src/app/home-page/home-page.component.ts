@@ -29,6 +29,7 @@ export class HomePageComponent {
   currentReservations: Reservation[] = [];
   stats: UserStats | null = null;
   isMoving = false;
+  duration = '+0 00:05:00';
 
   constructor(
     private _authService: AuthService,
@@ -78,9 +79,10 @@ export class HomePageComponent {
     const userID = this._authService.currentUser.value?.userId;
     const vehicleID = this.selectedMarker?.vehicleId;
     if (userID && vehicleID) {
-      this._vehiclesService.makeReservation(userID, vehicleID, '+0 00:05:00');
+      this._vehiclesService.makeReservation(userID, vehicleID, this.duration);
     }
     this.selectedMarker = null;
+    this.duration = '+0 00:05:00';
   }
 
   formatDate(dateString: string) {
@@ -93,6 +95,20 @@ export class HomePageComponent {
 
   selectOnMap(index: number) {
     this._mapService.selectRentedMarker(index);
+  }
+
+  onTimeChange(durationValue: string) {
+    if (durationValue === '5 min') {
+      this.duration = '+0 00:05:00';
+    } else if (durationValue === '10 min') {
+      this.duration = '+0 00:10:00';
+    } else {
+      this.duration = '+0 00:15:00';
+    }
+  }
+
+  getPrice() {
+    return Number(this.stats?.totalCost || 0).toFixed(2);
   }
 
   logout() {

@@ -30,8 +30,6 @@ export class MapService {
   }
 
   selectMarker(index: number) {
-    console.log('ASDAS', this.isMoving);
-
     if (!this.isMoving.value) {
       if (this.markers.value?.[index])
         this.selectedMarker.next(this.markers.value[index]);

@@ -95,7 +95,6 @@ export class MapComponent {
 
   selectMarker(index: number) {
     this._mapService.selectMarker(index);
-    console.log('HAHAH', this.selectedMarker);
   }
 
   selectRentedMarker(index: number) {
@@ -103,7 +102,6 @@ export class MapComponent {
   }
 
   mapClick(event: google.maps.MapMouseEvent) {
-    console.log();
     if (this.isMoving) {
       if (
         this.selectedRentedMarker?.vehicleId &&
