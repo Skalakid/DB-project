@@ -1,7 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { get, post } from '../api';
 import { Reservation } from '../models/Reservation';
+import { Marker } from '../models/Marker';
+import { VehiclesService } from '../services/vehicles.service';
+import { getDateTime } from '../date';
+import { formatDistance, format } from 'date-fns';
+import { pl } from 'date-fns/locale';
+import { UserStats } from '../models/User';
+import { UserService } from '../services/user.service';
+import { MapService } from '../services/map.service';
 
 @Component({
   selector: 'app-home-page',
@@ -12,51 +19,99 @@ export class HomePageComponent {
   @Input() firstName = '';
   @Input() lastName = '';
 
-  length: number = 31.6; // kilometres
-  amount: number = 7; // amount of reservations
+  length = 31.6; // kilometres
+  amount = 7; // amount of reservations
   rentals: Reservation[] = []; // list of all reservations
-  actual_reservation: boolean = false;
+  actual_reservation = false;
+  selectedMarker: Marker | null = null;
+  selectedRentedMarker: Marker | null = null;
+  reservations: Reservation[] = [];
+  currentReservations: Reservation[] = [];
+  stats: UserStats | null = null;
+  isMoving = false;
+  duration = '+0 00:05:00';
 
-  rental1: Reservation = {
-    date: '08.06.2023',
-    time: '13:23',
-    duration: 2.32,
-    price: 12.32,
-  };
+  constructor(
+    private _authService: AuthService,
+    private _vehiclesService: VehiclesService,
+    private _userService: UserService,
+    private _mapService: MapService
+  ) {
+    this._vehiclesService.reservations.subscribe(reservations => {
+      this.reservations =
+        reservations?.map(res => ({
+          ...res,
+          duration: formatDistance(new Date(res.r_begin), new Date(res.r_end), {
+            locale: pl,
+          }),
+        })) || [];
+    });
 
-  rental2: Reservation = {
-    date: '12.05.2023',
-    time: '23:02',
-    duration: 5.12,
-    price: 17.21,
-  };
+    this._vehiclesService.currentReservations.subscribe(reservations => {
+      this.currentReservations =
+        reservations?.map(res => ({
+          ...res,
+          r_end: getDateTime(new Date(res.r_end)),
+        })) || [];
+    });
 
-  constructor(private _authService: AuthService) {}
+    this._userService.currentUserStats.subscribe(res => {
+      this.stats = res;
+    });
 
-  ngOnInit() {
     this._authService.currentUser.subscribe(val => {
       this.firstName = val?.firstName || '';
       this.lastName = val?.lastName || '';
     });
 
-    this.rentals.push(this.rental1);
-    this.rentals.push(this.rental2);
+    this._mapService.selectedMarker.subscribe(
+      val => (this.selectedMarker = val)
+    );
+
+    this._mapService.selectedRentedMarker.subscribe(
+      val => (this.selectedRentedMarker = val)
+    );
+
+    this._mapService.isMoving.subscribe(val => (this.isMoving = val));
+  }
+
+  makeReservation() {
+    const userID = this._authService.currentUser.value?.userId;
+    const vehicleID = this.selectedMarker?.vehicleId;
+    if (userID && vehicleID) {
+      this._vehiclesService.makeReservation(userID, vehicleID, this.duration);
+    }
+    this.selectedMarker = null;
+    this.duration = '+0 00:05:00';
+  }
+
+  formatDate(dateString: string) {
+    return format(new Date(dateString), 'yyyy-MM-dd');
+  }
+
+  move() {
+    this._mapService.isMoving.next(true);
+  }
+
+  selectOnMap(index: number) {
+    this._mapService.selectRentedMarker(index);
+  }
+
+  onTimeChange(durationValue: string) {
+    if (durationValue === '5 min') {
+      this.duration = '+0 00:05:00';
+    } else if (durationValue === '10 min') {
+      this.duration = '+0 00:10:00';
+    } else {
+      this.duration = '+0 00:15:00';
+    }
+  }
+
+  getPrice() {
+    return Number(this.stats?.totalCost || 0).toFixed(2);
   }
 
   logout() {
     this._authService.logout();
-  }
-
-  async validate() {
-    try {
-      const res = await get('/auth/validate', {})();
-      console.log(res);
-    } catch (error) {
-      if (error instanceof Error) console.log(error);
-    }
-  }
-
-  refresh() {
-    this._authService.refreshAccessToken();
   }
 }

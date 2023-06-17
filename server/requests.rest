@@ -1,4 +1,4 @@
-GET http://localhost:3000/auth/get/all
+GET http://localhost:3000/vehicles/get/all
 
 ################################
 
@@ -44,4 +44,39 @@ Content-Type: application/json
 
 {
     "token": "<refresh_token>"
+}
+
+
+##########################
+
+POST http://localhost:3000/users/reservations/add
+Content-Type: application/json
+
+{
+    "userId": 121,
+    "vehicleId": 22,
+    "duration": "+0 00:00:01"
+}
+
+################
+
+GET http://localhost:3000/users/reservations/current?userId=121
+
+
+###############
+
+GET http://localhost:3000/users/stats?userId=121
+
+
+################################################################
+GET http://localhost:3000/vehicles/get/rented/user?userId=121
+
+################################################################
+POST http://localhost:3000/vehicles/update/position
+Content-Type: application/json
+
+{
+    "vehicleId": 11,
+    "lat": 50.01729,
+    "lng": 19.9187
 }

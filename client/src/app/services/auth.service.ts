@@ -8,11 +8,12 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   currentUser = new BehaviorSubject<User | null>(null);
+  currentUserStats = new BehaviorSubject<User | null>(null);
+
   constructor(private _router: Router) {
     const user = localStorage.getItem('user');
     if (user) {
       this.currentUser.next(JSON.parse(user));
-      console.log('LOGGED INT', user);
     }
   }
 
@@ -26,7 +27,6 @@ export class AuthService {
       await localStorage.setItem('accessToken', res.accessToken);
       await localStorage.setItem('refreshToken', res.refreshToken);
       await localStorage.setItem('user', JSON.stringify(res));
-      console.log(await localStorage.getItem('refreshToken'));
       this.currentUser.next(res);
       this._router.navigate(['/']);
     } catch (error) {

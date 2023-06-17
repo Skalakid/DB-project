@@ -6,3 +6,18 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.button {
+  padding: 10px;
+  border-radius: 10px;
+  border: 0;
+  background-color: rgb(223, 92, 11);
+  color: white;
+  font-size: 16px;
+  transition: 0.3s;
+
+}
+
+.button:hover, .button:disabled {
+  background-color: rgba(233, 134, 68, 0.5)
+}
