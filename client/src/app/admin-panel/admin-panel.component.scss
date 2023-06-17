@@ -1,0 +1,121 @@
+.bg {
+  width: 100vw;
+  height: 100vh;
+}
+
+.bg img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.content {
+  height: 96vh;
+  width: 90vw;
+  position: fixed;
+  left: 9vw;
+  top: 2vh;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-auto-rows: minmax(100px, auto);
+  row-gap: 30px;
+  column-gap: 15px;
+  grid-template-areas:
+    'newvehicle userReservations userReservations vehicleReservations vehicleReservations'
+    'newvehicle userReservations userReservations vehicleReservations vehicleReservations'
+    'placeholder placeholder placeholder placeholder placeholder'
+    'placeholder placeholder placeholder placeholder placeholder';
+}
+
+.tile {
+  background: rgba(255, 255, 255, 0.24);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(6.2px);
+  -webkit-backdrop-filter: blur(6.2px);
+  border: 1px solid rgb(236, 129, 83);
+  overflow: hidden;
+}
+
+.new-vehicle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  grid-area: newvehicle;
+}
+
+.input-group {
+  width: 50%;
+  margin-bottom: 10px;
+}
+
+.input-group label {
+  display: block;
+}
+
+.input-group input,
+.input-group select {
+  padding: 5px;
+  width: 100%;
+}
+
+.form-title {
+  background: #ffb76b;
+  background: linear-gradient(
+    to right,
+    #e48724 0%,
+    #895c24 30%,
+    #974e09 60%,
+    #f76409 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 1.3rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+input {
+  background-color: rgba(250, 176, 96, 0.4);
+}
+
+.submitButton {
+  padding: 10px 15px;
+  background-color: #dc7028;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.submitButton:hover {
+  background-color: #e66713;
+}
+
+label {
+  color: #643022;
+  font-weight: bold;
+}
+
+.reservations {
+  grid-area: userReservations;
+}
+
+.userReservations {
+  grid-area: userReservations;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.vehicleReservations {
+  grid-area: vehicleReservations;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+}

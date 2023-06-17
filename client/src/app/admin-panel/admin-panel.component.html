@@ -1,0 +1,62 @@
+<div class="bg">
+  <img src="assets/bg.jpg" />
+  <div class="content">
+    <form class="new-vehicle tile">
+      <p class="form-title">Formularz nowej hulajnogi</p>
+      <div class="input-group">
+        <label for="modelId">MODEL:</label>
+        <input type="text" id="modelId" name="modelId" />
+      </div>
+      <div class="input-group">
+        <label for="batteryCode">BATERIA:</label>
+        <input type="text" id="batteryCode" name="batteryCode" />
+      </div>
+      <div class="input-group">
+        <label for="length">DŁUGOŚĆ:</label>
+        <input type="text" id="length" name="length" />
+      </div>
+      <div class="input-group">
+        <label for="width">SZEROKOŚĆ:</label>
+        <input type="text" id="width" name="width" />
+      </div>
+      <div class="input-group">
+        <label for="weight">WAGA:</label>
+        <input type="text" id="weight" name="weight" />
+      </div>
+      <div class="input-group">
+        <label for="costPerMinute">KOSZT:</label>
+        <input type="text" id="costPerMinute" name="costPerMinute" />
+      </div>
+      <div class="input-group">
+        <label for="amount">ILOŚĆ:</label>
+        <input type="text" id="amount" name="amount" />
+      </div>
+      <input type="submit" class="submitButton" value="Utwórz" />
+    </form>
+    <div class="userReservations tile reservation">
+      <p class="form-title">Lista rezerwacji użytkownika</p>
+      <form id="userIdForm">
+        <label for="userId">ID Użytkownika:</label>
+        <input type="text" id="userId" name="userId" required />
+        <button type="submit" class="submitButton">Pokaż rezerwacje</button>
+      </form>
+
+      <div id="reservationsSection">
+        <!--  rezerwacje użytkownika -->
+      </div>
+    </div>
+    <div class="vehicleReservations tile reservation">
+      <p class="form-title">Lista rezerwacji hulajnogi</p>
+      <form id="userIdForm">
+        <label for="userId">ID Hulajnogi:</label>
+        <input type="text" id="vehicleId" name="vehicleId" required />
+        <button type="submit" class="submitButton">Pokaż rezerwacje</button>
+      </form>
+
+      <div id="reservationsSection"></div>
+    </div>
+    <div class="changeVehicleData tile">
+      <div id="reservationsSection"></div>
+    </div>
+  </div>
+</div>

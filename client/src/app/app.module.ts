@@ -11,6 +11,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { VehiclesComponent } from './vehicles/vehicles.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HomePageComponent,
     NavBarComponent,
     VehiclesComponent,
+    AdminPanelComponent,
   ],
   imports: [
     BrowserModule,
