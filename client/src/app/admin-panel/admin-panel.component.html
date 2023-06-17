@@ -33,32 +33,84 @@
       </div>
       <input type="submit" class="submitButton" value="Utwórz" />
     </form>
-    <div class="searchOptions">
-      <div class="userReservations tile">
-        <p class="form-title">Lista rezerwacji</p>
 
-        <div class="searchOptions">
-          <button class="searchOptionButton active" id="userSearchButton">
-            Szukaj użytkownika
-          </button>
-          <button class="searchOptionButton" id="scooterSearchButton">
-            Szukaj hulajnogi
-          </button>
-        </div>
+    <div class="reservations tile">
+      <p class="form-title">Lista rezerwacji</p>
 
+      <div class="searchOptions">
         <form id="searchForm">
           <label for="searchId">ID:</label>
           <input type="text" id="searchId" name="searchId" required />
         </form>
+        <div class="buttons">
+          <button
+            class="searchOptionButton active"
+            id="userSearchButton"
+            (click)="showUserRentals()">
+            Szukaj użytkownika
+          </button>
+          <button
+            class="searchOptionButton"
+            id="scooterSearchButton"
+            (click)="showVehicleRentals()">
+            Szukaj hulajnogi
+          </button>
+        </div>
+      </div>
 
-        <div id="reservationsSection">
-          <!-- wyniki wyszukiwania -->
+      <div class="rentals-box" *ngIf="userVisible">
+        <div class="rentals" *ngFor="let rental of userRentals">
+          <div class="scooterId-box">
+            <p>Hulajnoga {{ rental.scooterId }}</p>
+          </div>
+          <div class="date-box">
+            <p>{{ rental.date }}</p>
+          </div>
+          <div class="duration-box">
+            <p>{{ rental.duration }} minut</p>
+          </div>
+          <div class="price-box">
+            <p>{{ rental.price }}zł</p>
+          </div>
+        </div>
+      </div>
+      <div class="rentals-box" *ngIf="vehicleVisible">
+        <div class="rentals" *ngFor="let rental of vehicleRentals">
+          <div class="scooterId-box">
+            <p>Użytkownik {{ rental.userId }}</p>
+          </div>
+          <div class="date-box">
+            <p>{{ rental.date }}</p>
+          </div>
+          <div class="duration-box">
+            <p>{{ rental.duration }} minut</p>
+          </div>
+          <div class="price-box">
+            <p>{{ rental.price }}zł</p>
+          </div>
         </div>
       </div>
     </div>
+
     <div class="changeVehicleData tile">
       <p class="form-title">Lista hulajnóg</p>
-      <div id="reservationsSection"></div>
+      <div class="rentals" *ngFor="let vehicle of allVehicles">
+        <div class="date-box">
+          <p>Klasa {{ vehicle.type }}</p>
+        </div>
+        <div class="date-box">
+          <p>Model {{ vehicle.model }}</p>
+        </div>
+        <div class="duration-box">
+          <p>Długość {{ vehicle.length }} m</p>
+        </div>
+        <div class="duration-box">
+          <p>Szerokość {{ vehicle.width }} m</p>
+        </div>
+        <div class="price-box">
+          <p>{{ vehicle.weight }} kg</p>
+        </div>
+      </div>
     </div>
   </div>
 </div>

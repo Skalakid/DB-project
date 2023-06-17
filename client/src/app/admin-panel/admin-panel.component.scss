@@ -46,17 +46,17 @@
   grid-area: newvehicle;
 }
 
-.input-group {
+.new-vehicle .input-group {
   width: 50%;
   margin-bottom: 10px;
 }
 
-.input-group label {
+.new-vehicle .input-group label {
   display: block;
 }
 
-.input-group input,
-.input-group select {
+.new-vehicle .input-group input,
+.new-vehicle .input-group select {
   padding: 5px;
   width: 100%;
 }
@@ -110,16 +110,83 @@ label {
   font-weight: bold;
 }
 
-.searchOptions {
+.Reservations {
   grid-area: userReservations;
-  height: auto;
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
   flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   padding: 20px;
+}
+
+.Reservations .searchOptions {
+  padding: 10px;
 }
 
 .changeVehicleData {
   grid-area: changeVehicleData;
+}
+
+.rentals {
+  width: 90%;
+  height: 10%;
+  background-color: rgba(233, 134, 68, 0.5);
+  border: 1px solid rgb(223, 92, 11);
+  border-radius: 10px;
+  color: white;
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.rentals .price-box {
+  color: rgb(255, 0, 0);
+}
+
+.rentals .duration-box {
+  color: #fbdf93;
+}
+
+.rentals .date-box {
+  color: #fceabb;
+}
+
+.rentals .scooterId-box {
+  color: #b7602a;
+}
+
+.reservations {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  grid-area: userReservations;
+}
+
+.searchOptions {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.searchOptions .buttons {
+  display: flex;
+  flex-direction: row;
+}
+
+.rentals-box {
+  width: 90%;
+  height: 70%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.changeVehicleData {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

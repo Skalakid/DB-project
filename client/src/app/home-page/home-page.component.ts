@@ -18,6 +18,8 @@ export class HomePageComponent {
   actual_reservation: boolean = false;
 
   rental1: Reservation = {
+    scooterId: 2,
+    userId: 2,
     date: '08.06.2023',
     time: '13:23',
     duration: 2.32,
@@ -25,6 +27,8 @@ export class HomePageComponent {
   };
 
   rental2: Reservation = {
+    scooterId: 7,
+    userId: 2,
     date: '12.05.2023',
     time: '23:02',
     duration: 5.12,
