@@ -33,29 +33,31 @@
       </div>
       <input type="submit" class="submitButton" value="Utwórz" />
     </form>
-    <div class="userReservations tile reservation">
-      <p class="form-title">Lista rezerwacji użytkownika</p>
-      <form id="userIdForm">
-        <label for="userId">ID Użytkownika:</label>
-        <input type="text" id="userId" name="userId" required />
-        <button type="submit" class="submitButton">Pokaż rezerwacje</button>
-      </form>
+    <div class="searchOptions">
+      <div class="userReservations tile">
+        <p class="form-title">Lista rezerwacji</p>
 
-      <div id="reservationsSection">
-        <!--  rezerwacje użytkownika -->
+        <div class="searchOptions">
+          <button class="searchOptionButton active" id="userSearchButton">
+            Szukaj użytkownika
+          </button>
+          <button class="searchOptionButton" id="scooterSearchButton">
+            Szukaj hulajnogi
+          </button>
+        </div>
+
+        <form id="searchForm">
+          <label for="searchId">ID:</label>
+          <input type="text" id="searchId" name="searchId" required />
+        </form>
+
+        <div id="reservationsSection">
+          <!-- wyniki wyszukiwania -->
+        </div>
       </div>
     </div>
-    <div class="vehicleReservations tile reservation">
-      <p class="form-title">Lista rezerwacji hulajnogi</p>
-      <form id="userIdForm">
-        <label for="userId">ID Hulajnogi:</label>
-        <input type="text" id="vehicleId" name="vehicleId" required />
-        <button type="submit" class="submitButton">Pokaż rezerwacje</button>
-      </form>
-
-      <div id="reservationsSection"></div>
-    </div>
     <div class="changeVehicleData tile">
+      <p class="form-title">Lista hulajnóg</p>
       <div id="reservationsSection"></div>
     </div>
   </div>

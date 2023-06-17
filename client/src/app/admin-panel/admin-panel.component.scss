@@ -21,8 +21,8 @@
   row-gap: 30px;
   column-gap: 15px;
   grid-template-areas:
-    'newvehicle userReservations userReservations vehicleReservations vehicleReservations'
-    'newvehicle userReservations userReservations vehicleReservations vehicleReservations'
+    'newvehicle userReservations userReservations changeVehicleData changeVehicleData'
+    'newvehicle userReservations userReservations changeVehicleData changeVehicleData'
     'placeholder placeholder placeholder placeholder placeholder'
     'placeholder placeholder placeholder placeholder placeholder';
 }
@@ -81,6 +81,18 @@ input {
   background-color: rgba(250, 176, 96, 0.4);
 }
 
+button {
+  padding: 10px 15px;
+  background-color: #dc7028;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #e66713;
+}
+
 .submitButton {
   padding: 10px 15px;
   background-color: #dc7028;
@@ -98,12 +110,9 @@ label {
   font-weight: bold;
 }
 
-.reservations {
+.searchOptions {
   grid-area: userReservations;
-}
-
-.userReservations {
-  grid-area: userReservations;
+  height: auto;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -111,11 +120,6 @@ label {
   padding: 20px;
 }
 
-.vehicleReservations {
-  grid-area: vehicleReservations;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-direction: column;
-  padding: 20px;
+.changeVehicleData {
+  grid-area: changeVehicleData;
 }
