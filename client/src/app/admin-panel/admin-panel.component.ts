@@ -14,16 +14,20 @@ export class AdminPanelComponent {
 
   userVisible: boolean = false;
   vehicleVisible: boolean = false;
-  searchId: string = '';
+  Id: string = '';
 
   showUserRentals(): void {
     this.userVisible = true;
     this.vehicleVisible = false;
+    this.Id = this.Id || '';
+    console.log(this.Id);
   }
 
   showVehicleRentals(): void {
     this.userVisible = false;
     this.vehicleVisible = true;
+    this.Id = this.Id || '';
+    console.log(this.Id);
   }
 }
 
