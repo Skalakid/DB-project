@@ -13,6 +13,8 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { VehiclesComponent } from './vehicles/vehicles.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
+import { GoogleMapsModule } from '@angular/google-maps';
+import { MapComponent } from './map/map.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,7 @@ import { AdminPanelComponent } from './admin-panel/admin-panel.component';
     NavBarComponent,
     VehiclesComponent,
     AdminPanelComponent,
+    MapComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,6 +34,7 @@ import { AdminPanelComponent } from './admin-panel/admin-panel.component';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     FormsModule,
+    GoogleMapsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

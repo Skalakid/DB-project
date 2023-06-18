@@ -12,9 +12,9 @@ export class AdminPanelComponent {
   vehicleRentals: Reservation[] = generateData2();
   allVehicles: Vehicle[] = generateData3();
 
-  userVisible: boolean = false;
-  vehicleVisible: boolean = false;
-  Id: string = '';
+  userVisible = false;
+  vehicleVisible = false;
+  Id = '';
 
   showUserRentals(): void {
     this.userVisible = true;
@@ -32,42 +32,46 @@ export class AdminPanelComponent {
 }
 
 function generateData(): Reservation[] {
-  let rentals: Reservation[] = [];
+  const rentals: Reservation[] = [];
 
-  let rental1: Reservation = {
-    scooterId: 3,
-    userId: 1,
-    date: '12.05.2023',
-    time: '23:02',
-    duration: 5.12,
-    price: 17.21,
+  const rental1: Reservation = {
+    reservationId: 1,
+    vehicleId: 3,
+    userId: 5,
+    r_begin: '12.05.2023',
+    r_end: '12.05.2023',
+    duration: '+0 00:05:00',
+    cost: 17.21,
   };
 
-  let rental2: Reservation = {
-    scooterId: 5,
-    userId: 1,
-    date: '08.06.2023',
-    time: '13:23',
-    duration: 2.32,
-    price: 12.32,
+  const rental2: Reservation = {
+    reservationId: 1,
+    vehicleId: 3,
+    userId: 5,
+    r_begin: '12.05.2023',
+    r_end: '12.05.2023',
+    duration: '+0 00:05:00',
+    cost: 17.21,
   };
 
-  let rental3: Reservation = {
-    scooterId: 5,
-    userId: 1,
-    date: '12.06.2023',
-    time: '17:15',
-    duration: 22.32,
-    price: 37.22,
+  const rental3: Reservation = {
+    reservationId: 1,
+    vehicleId: 3,
+    userId: 5,
+    r_begin: '12.05.2023',
+    r_end: '12.05.2023',
+    duration: '+0 00:05:00',
+    cost: 17.21,
   };
 
-  let rental4: Reservation = {
-    scooterId: 1,
-    userId: 1,
-    date: '12.02.2023',
-    time: '22:22',
-    duration: 22.32,
-    price: 7.89,
+  const rental4: Reservation = {
+    reservationId: 1,
+    vehicleId: 3,
+    userId: 5,
+    r_begin: '12.05.2023',
+    r_end: '12.05.2023',
+    duration: '+0 00:05:00',
+    cost: 17.21,
   };
 
   rentals.push(rental1, rental2, rental3, rental4);
@@ -76,42 +80,46 @@ function generateData(): Reservation[] {
 }
 
 function generateData2(): Reservation[] {
-  let rentals: Reservation[] = [];
+  const rentals: Reservation[] = [];
 
-  let rental1: Reservation = {
-    scooterId: 3,
+  const rental1: Reservation = {
+    reservationId: 1,
+    vehicleId: 3,
     userId: 5,
-    date: '12.05.2023',
-    time: '23:02',
-    duration: 5.12,
-    price: 17.21,
+    r_begin: '12.05.2023',
+    r_end: '12.05.2023',
+    duration: '+0 00:05:00',
+    cost: 17.21,
   };
 
-  let rental2: Reservation = {
-    scooterId: 5,
-    userId: 6,
-    date: '08.06.2023',
-    time: '13:23',
-    duration: 2.32,
-    price: 12.32,
+  const rental2: Reservation = {
+    reservationId: 1,
+    vehicleId: 3,
+    userId: 5,
+    r_begin: '12.05.2023',
+    r_end: '12.05.2023',
+    duration: '+0 00:05:00',
+    cost: 17.21,
   };
 
-  let rental3: Reservation = {
-    scooterId: 5,
-    userId: 6,
-    date: '12.06.2023',
-    time: '17:15',
-    duration: 22.32,
-    price: 37.22,
+  const rental3: Reservation = {
+    reservationId: 1,
+    vehicleId: 3,
+    userId: 5,
+    r_begin: '12.05.2023',
+    r_end: '12.05.2023',
+    duration: '+0 00:05:00',
+    cost: 17.21,
   };
 
-  let rental4: Reservation = {
-    scooterId: 1,
-    userId: 2,
-    date: '12.02.2023',
-    time: '22:22',
-    duration: 22.32,
-    price: 7.89,
+  const rental4: Reservation = {
+    reservationId: 1,
+    vehicleId: 3,
+    userId: 5,
+    r_begin: '12.05.2023',
+    r_end: '12.05.2023',
+    duration: '+0 00:05:00',
+    cost: 17.21,
   };
 
   rentals.push(rental1, rental2, rental3, rental4);
@@ -120,9 +128,9 @@ function generateData2(): Reservation[] {
 }
 
 function generateData3(): Vehicle[] {
-  let vehicles: Vehicle[] = [];
+  const vehicles: Vehicle[] = [];
 
-  let vehicle1: Vehicle = {
+  const vehicle1: Vehicle = {
     type: 'A',
     model: 'A3',
     length: 1.23,
@@ -131,7 +139,7 @@ function generateData3(): Vehicle[] {
     amount: 5,
   };
 
-  let vehicle2: Vehicle = {
+  const vehicle2: Vehicle = {
     type: 'A',
     model: 'A11',
     length: 1.43,
@@ -140,7 +148,7 @@ function generateData3(): Vehicle[] {
     amount: 2,
   };
 
-  let vehicle3: Vehicle = {
+  const vehicle3: Vehicle = {
     type: 'B',
     model: 'B1',
     length: 3.33,

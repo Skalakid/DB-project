@@ -61,16 +61,16 @@
       <div class="rentals-box" *ngIf="userVisible">
         <div class="rentals" *ngFor="let rental of userRentals">
           <div class="scooterId-box">
-            <p>Hulajnoga {{ rental.scooterId }}</p>
+            <p>Hulajnoga {{ rental.vehicleId }}</p>
           </div>
           <div class="date-box">
-            <p>{{ rental.date }}</p>
+            <p>{{ rental.r_begin }}</p>
           </div>
           <div class="duration-box">
             <p>{{ rental.duration }} minut</p>
           </div>
           <div class="price-box">
-            <p>{{ rental.price }}zł</p>
+            <p>{{ rental.cost }}zł</p>
           </div>
         </div>
       </div>
@@ -80,13 +80,13 @@
             <p>Użytkownik {{ rental.userId }}</p>
           </div>
           <div class="date-box">
-            <p>{{ rental.date }}</p>
+            <p>{{ rental.r_begin }}</p>
           </div>
           <div class="duration-box">
             <p>{{ rental.duration }} minut</p>
           </div>
           <div class="price-box">
-            <p>{{ rental.price }}zł</p>
+            <p>{{ rental.cost }}zł</p>
           </div>
         </div>
       </div>
