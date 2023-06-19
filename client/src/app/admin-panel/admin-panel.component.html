@@ -125,13 +125,17 @@
       <p class="form-title">INFO</p>
 
       <div *ngIf="selectedMarker.marker !== null">
-        <p>Status: {{ selectedMarker.type }}</p>
-        <p>ID: {{ selectedMarker.marker.vehicleId }}</p>
-        <p>Model ID: {{ selectedMarker.marker.modelId }}</p>
-        <p>Energia: {{ selectedMarker.marker?.energyLevel || '-' }}</p>
-        <p>Koszt: {{ getCostString() }}</p>
+        <div class="info">
+          <p>Status: {{ selectedMarker.type }}</p>
+          <p>ID: {{ selectedMarker.marker.vehicleId }}</p>
+          <p>Model ID: {{ selectedMarker.marker.modelId }}</p>
+          <p class="energy">
+            Energia: {{ selectedMarker.marker?.energyLevel || '-' }}
+          </p>
+          <p class="cost">Koszt: {{ getCostString() }}</p>
+        </div>
 
-        <div *ngIf="selectedMarker.type !== 'rented'">
+        <div class="buttons" *ngIf="selectedMarker.type !== 'rented'">
           <button
             class="button"
             (click)="toggleVehicleStatus()"
@@ -141,7 +145,10 @@
           <button class="button" [disabled]="isMoving" (click)="startMoving()">
             Przemiść
           </button>
+
+          <p>Energia:</p>
           <input
+            class="energyLvl"
             type="number"
             max="100"
             min="0"
@@ -149,10 +156,6 @@
             [(ngModel)]="newEnergy" />
           <button class="button" [disabled]="isMoving" (click)="changeEnergy()">
             Doładuj
-          </button>
-          <input type="number" min="0" step="0.01" [(ngModel)]="newCost" />
-          <button class="button" [disabled]="isMoving" (click)="changeCost()">
-            Zmień
           </button>
         </div>
       </div>

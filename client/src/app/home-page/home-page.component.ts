@@ -107,8 +107,12 @@ export class HomePageComponent {
     }
   }
 
+  roundPrice(cost: number) {
+    return Number(cost).toFixed(2);
+  }
+
   getPrice() {
-    return Number(this.stats?.totalCost || 0).toFixed(2);
+    return this.roundPrice(this.stats?.totalCost || 0);
   }
 
   logout() {

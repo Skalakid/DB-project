@@ -97,7 +97,6 @@ export class AdminPanelComponent {
   isMoving = false;
 
   newEnergy = 0;
-  newCost = 0;
 
   constructor(
     private _mapService: MapService,
@@ -113,14 +112,17 @@ export class AdminPanelComponent {
 
     this._vehiclesService.avaliableVehicles.subscribe(vehicles => {
       this.availableMarkers = vehicles || [];
+      this.updateSelectedVehice();
     });
 
     this._vehiclesService.rentedVehicles.subscribe(vehicles => {
       this.rentedMarkers = vehicles || [];
+      this.updateSelectedVehice();
     });
 
     this._vehiclesService.unavaliableVehicles.subscribe(vehicles => {
       this.unavailableMarkers = vehicles || [];
+      this.updateSelectedVehice();
     });
   }
 
@@ -221,6 +223,27 @@ export class AdminPanelComponent {
       }
   }
 
+  updateSelectedVehice() {
+    if (this.selectedMarker.marker) {
+      if (this.selectedMarker.type === 'available') {
+        this.selectedMarker.marker =
+          this.availableMarkers.find(
+            item => item.vehicleId === this.selectedMarker.marker?.vehicleId
+          ) || null;
+      } else if (this.selectedMarker.type === 'unavailable') {
+        this.selectedMarker.marker =
+          this.unavailableMarkers.find(
+            item => item.vehicleId === this.selectedMarker.marker?.vehicleId
+          ) || null;
+      } else if (this.selectedMarker.type === 'rented') {
+        this.selectedMarker.marker =
+          this.rentedMarkers.find(
+            item => item.vehicleId === this.selectedMarker.marker?.vehicleId
+          ) || null;
+      }
+    }
+  }
+
   async toggleVehicleStatus() {
     if (!this.isMoving)
       if (this.selectedMarker.marker?.vehicleId) {
@@ -251,13 +274,13 @@ export class AdminPanelComponent {
     }
   }
 
-  changeEnergy() {
+  async changeEnergy() {
     if (
       this.selectedMarker.marker?.vehicleId &&
       this.newEnergy >= 0 &&
       this.newEnergy <= 100
     )
-      this._vehiclesService.updateEnergyLevel(
+      await this._vehiclesService.updateEnergyLevel(
         this.selectedMarker.marker.vehicleId,
         this.newEnergy
       );
@@ -273,16 +296,5 @@ export class AdminPanelComponent {
     return this.selectedMarker.marker?.costPerMinute
       ? this.selectedMarker.marker?.costPerMinute.toFixed(2)
       : 0;
-  }
-
-  changeCost() {
-    const cost = this.roundToTwo(this.newCost);
-    if (this.selectedMarker.marker?.vehicleId && cost >= 0)
-      this._vehiclesService.updateCost(
-        this.selectedMarker.marker.vehicleId,
-        cost
-      );
-    this.isMoving = false;
-    this.newCost = 0;
   }
 }

@@ -23,8 +23,8 @@
   grid-template-areas:
     'newvehicle userReservations userReservations userReservations mapInformation'
     'newvehicle userReservations userReservations userReservations mapInformation'
-    'changeVehicleData changeVehicleData changeVehicleData placeholder placeholder'
-    'changeVehicleData changeVehicleData changeVehicleData placeholder placeholder';
+    'changeVehicleData placeholder placeholder placeholder placeholder'
+    'changeVehicleData placeholder placeholder placeholder placeholder';
 }
 
 .tile {
@@ -212,4 +212,35 @@ label {
   flex-direction: row;
   justify-content: space-between;
   width: 50%;
+}
+
+.info {
+  padding: 20px;
+  color: white;
+  font-weight: bold;
+}
+
+.cost {
+  color: yellow;
+}
+
+.energy {
+  color: greenyellow;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.button,
+.energyLvl {
+  margin-bottom: 10px;
+}
+
+.energyLvl {
+  width: 50%;
+  padding: 5px;
 }
