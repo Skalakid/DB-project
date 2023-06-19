@@ -10,10 +10,13 @@ import { UserService } from './user.service';
   providedIn: 'root',
 })
 export class VehiclesService {
+  unavaliableVehicles = new BehaviorSubject<Marker[] | null>(null);
   avaliableVehicles = new BehaviorSubject<Marker[] | null>(null);
   rentedVehicles = new BehaviorSubject<Marker[] | null>(null);
   currentReservations = new BehaviorSubject<Reservation[] | null>(null);
   reservations = new BehaviorSubject<Reservation[] | null>(null);
+  models = new BehaviorSubject<string[] | null>(null);
+  batteries = new BehaviorSubject<string[] | null>(null);
   userId: number | null = null;
 
   constructor(
@@ -27,16 +30,31 @@ export class VehiclesService {
   }
 
   refresh() {
+    console.log('Refreshing vehicles service...');
     this.getAvaliableVehicles();
     this.getRentedVehicles();
     this.getUserCurrentReservations();
     this.getUserAllReservations();
+    this.getAllModels();
+    this.getAllBatteries();
+    this.getAllUnavailableVehicles();
     this._userService.refresh();
+  }
+
+  async getAllUnavailableVehicles() {
+    try {
+      const res = await get('/vehicles/get/all/unavailable', {})();
+      this.unavaliableVehicles.next(res);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
   }
 
   async getAvaliableVehicles() {
     try {
-      const res = await get('/vehicles/get/all', {})();
+      const res = await get('/vehicles/get/all/available', {})();
       this.avaliableVehicles.next(res);
     } catch (error) {
       if (error instanceof Error) {
@@ -107,6 +125,58 @@ export class VehiclesService {
         lng,
       })();
       this.refresh();
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
+  }
+
+  async getAllModels() {
+    try {
+      const res = await get('/vehicles/get/models', {})();
+      this.models.next(res);
+      return res;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
+  }
+
+  async getAllBatteries() {
+    try {
+      const res = await get('/vehicles/get/batteries', {})();
+      this.batteries.next(res);
+      return res;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
+  }
+
+  async addVehicle(
+    modelID: string,
+    batteryCode: string,
+    lng: number,
+    lat: number,
+    vehicleStatus: string,
+    energyLvl: number,
+    costPerMinute: number
+  ) {
+    try {
+      const res = await post('/vehicles/add', {
+        modelID,
+        batteryCode,
+        lat,
+        lng,
+        vehicleStatus,
+        energyLvl,
+        costPerMinute,
+      })();
+      this.refresh();
+      return res;
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);

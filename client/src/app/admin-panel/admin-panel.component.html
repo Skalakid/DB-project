@@ -5,91 +5,87 @@
       <p class="form-title">Formularz nowej hulajnogi</p>
       <div class="input-group">
         <label for="modelId">MODEL:</label>
-        <input type="text" id="modelId" name="modelId" />
+        <select name="battery" [(ngModel)]="selectedModel">
+          <option *ngFor="let model of vehicleModels" value="{{ model }}">
+            {{ model }}
+          </option>
+        </select>
       </div>
       <div class="input-group">
         <label for="batteryCode">BATERIA:</label>
-        <input type="text" id="batteryCode" name="batteryCode" />
+        <select name="battery" [(ngModel)]="selectedBatteryCode">
+          <option *ngFor="let model of vehicleBatteries" value="{{ model }}">
+            {{ model }}
+          </option>
+        </select>
       </div>
       <div class="input-group">
-        <label for="length">DŁUGOŚĆ:</label>
-        <input type="text" id="length" name="length" />
+        <label for="length">LNG:</label>
+        <input type="text" id="length" name="length" value="{{ latCords }}" />
       </div>
       <div class="input-group">
-        <label for="width">SZEROKOŚĆ:</label>
-        <input type="text" id="width" name="width" />
+        <label for="width">LAT:</label>
+        <input type="text" id="width" name="width" value="{{ lngCords }}" />
       </div>
       <div class="input-group">
-        <label for="weight">WAGA:</label>
-        <input type="text" id="weight" name="weight" />
+        <label for="energyLvl">ENERGIA</label>
+        <input
+          type="number"
+          id="energyLvl"
+          name="energyLvl"
+          value="100"
+          max="100"
+          min="0"
+          [(ngModel)]="energyLvl" />
       </div>
       <div class="input-group">
-        <label for="costPerMinute">KOSZT:</label>
-        <input type="text" id="costPerMinute" name="costPerMinute" />
+        <label for="costPerMinute">KOSZT NA MINUTE:</label>
+        <input
+          type="text"
+          id="costPerMinute"
+          name="costPerMinute"
+          value="{{ costPerMinute }}"
+          [(ngModel)]="costPerMinute" />
       </div>
-      <div class="input-group">
-        <label for="amount">ILOŚĆ:</label>
-        <input type="text" id="amount" name="amount" />
+      <div class="input-group-row">
+        <label for="available">DOSTĘPNA?</label>
+        <input
+          type="checkbox"
+          id="available"
+          name="available"
+          checked
+          [(ngModel)]="available" />
       </div>
-      <input type="submit" class="submitButton" value="Utwórz" />
+
+      <input
+        type="submit"
+        class="submitButton"
+        value="Utwórz"
+        (click)="addVehicle()" />
     </form>
 
     <div class="reservations tile">
-      <p class="form-title">Lista rezerwacji</p>
+      <google-map
+        class="test"
+        width="100%"
+        height="100%"
+        [zoom]="zoom"
+        [center]="center"
+        [options]="options"
+        (mapClick)="selectCords($event)">
+        <map-marker
+          *ngIf="isCreatingNewMarker"
+          [position]="{ lat: latCords, lng: lngCords }"
+          [options]="markerOptions">
+        </map-marker>
 
-      <div class="searchOptions">
-        <form id="searchForm">
-          <label for="Id">ID:</label>
-          <input type="text" id="Id" name="Id" [(ngModel)]="Id" required />
-        </form>
-        <div class="buttons">
-          <button
-            class="searchOptionButton active"
-            id="userSearchButton"
-            (click)="showUserRentals()">
-            Szukaj użytkownika
-          </button>
-          <button
-            class="searchOptionButton"
-            id="scooterSearchButton"
-            (click)="showVehicleRentals()">
-            Szukaj hulajnogi
-          </button>
-        </div>
-      </div>
-
-      <div class="rentals-box" *ngIf="userVisible">
-        <div class="rentals" *ngFor="let rental of userRentals">
-          <div class="scooterId-box">
-            <p>Hulajnoga {{ rental.vehicleId }}</p>
-          </div>
-          <div class="date-box">
-            <p>{{ rental.r_begin }}</p>
-          </div>
-          <div class="duration-box">
-            <p>{{ rental.duration }} minut</p>
-          </div>
-          <div class="price-box">
-            <p>{{ rental.cost }}zł</p>
-          </div>
-        </div>
-      </div>
-      <div class="rentals-box" *ngIf="vehicleVisible">
-        <div class="rentals" *ngFor="let rental of vehicleRentals">
-          <div class="scooterId-box">
-            <p>Użytkownik {{ rental.userId }}</p>
-          </div>
-          <div class="date-box">
-            <p>{{ rental.r_begin }}</p>
-          </div>
-          <div class="duration-box">
-            <p>{{ rental.duration }} minut</p>
-          </div>
-          <div class="price-box">
-            <p>{{ rental.cost }}zł</p>
-          </div>
-        </div>
-      </div>
+        <map-marker
+          *ngFor="let marker of availableMarkers; let i = index"
+          [position]="{ lat: marker.latCords, lng: marker.lngCords }"
+          [title]="marker.modelId"
+          [options]="markerOptions">
+        </map-marker>
+      </google-map>
     </div>
 
     <div class="changeVehicleData tile">

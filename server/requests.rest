@@ -48,14 +48,17 @@ Content-Type: application/json
 
 
 ##########################
-
-POST http://localhost:3000/users/reservations/add
+POST http://localhost:3000/vehicles/add
 Content-Type: application/json
 
 {
-    "userId": 121,
-    "vehicleId": 22,
-    "duration": "+0 00:00:01"
+      "modelID": "asd",
+      "batteryCode": "asd",
+      "lat": 19.833627172179984, 
+      "lng": 50.08401736513421,
+      "vehicleStatus": "Available",
+      "energyLvl": 98,
+      "costPerMinute": 4
 }
 
 ################
@@ -80,3 +83,7 @@ Content-Type: application/json
     "lat": 50.01729,
     "lng": 19.9187
 }
+
+########
+
+GET http://localhost:3000/vehicles/get/all/unavailable

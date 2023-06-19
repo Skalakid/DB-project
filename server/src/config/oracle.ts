@@ -9,14 +9,14 @@ const params = {
 
 const connect = async () => {
   try {
-    // try {
-    //   // for macBooks :)
-    //   oracledb.initOracleClient({
-    //     libDir: process.env.HOME + '/Downloads/instantclient_19_8',
-    //   });
-    // } catch (err) {
-    //   // console.error('Already initialized!');
-    // }
+    try {
+      // for macBooks :)
+      oracledb.initOracleClient({
+        libDir: process.env.HOME + '/Downloads/instantclient_19_8',
+      });
+    } catch (err) {
+      // console.error('Already initialized!');
+    }
     const connection = await oracledb.getConnection({ ...params });
     return connection;
   } catch (error) {
