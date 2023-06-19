@@ -5,10 +5,10 @@ import extractJWT from '../middleware/extractJWT';
 const router = express.Router();
 
 router.get('/validate', extractJWT, controller.validateToken);
-router.post('/refresh/token', controller.refreshToken);
+router.post('/refresh/token', extractJWT, controller.refreshToken);
 router.post('/login', controller.login);
 router.post('/register', controller.register);
-router.delete('/logout', controller.logout);
-router.post('/change/password', controller.changePassword);
+router.delete('/logout', extractJWT, controller.logout);
+router.post('/change/password', extractJWT, controller.changePassword);
 
 export = router;

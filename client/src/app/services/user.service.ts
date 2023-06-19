@@ -22,6 +22,7 @@ export class UserService {
   }
 
   async getStats() {
+    if (!this.userId) return;
     try {
       const res = await get('/users/stats', {
         userId: this.userId,

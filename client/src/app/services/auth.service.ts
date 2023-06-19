@@ -35,14 +35,15 @@ export class AuthService {
   }
 
   async logout() {
-    try {
-      const refreshToken = await localStorage.getItem('refreshToken');
-      await _delete('/auth/logout', {
-        token: refreshToken,
-      })();
-    } catch (error) {
-      //
-    }
+    // try {
+    //   const refreshToken = await localStorage.getItem('refreshToken');
+    //   await _delete('/auth/logout', {
+    //     token: refreshToken,
+    //   })();
+    // } catch (error) {
+    //   //
+    //   console.error(error.message);
+    // }
     localStorage.clear();
     this._router.navigate(['/login']);
   }

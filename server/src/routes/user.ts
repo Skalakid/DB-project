@@ -4,14 +4,18 @@ import extractJWT from '../middleware/extractJWT';
 
 const router = express.Router();
 
-router.get('/get/all', controller.getAllUsers);
+router.get('/get/all', extractJWT, controller.getAllUsers);
 
-router.get('/stats', controller.getUserStats);
+router.get('/stats', extractJWT, controller.getUserStats);
 
-router.get('/reservations/all', controller.getUserReservations);
+router.get('/reservations/all', extractJWT, controller.getUserReservations);
 
-router.get('/reservations/current', controller.getUserCurrentReservations);
+router.get(
+  '/reservations/current',
+  extractJWT,
+  controller.getUserCurrentReservations
+);
 
-router.post('/reservations/add', controller.addReservation);
+router.post('/reservations/add', extractJWT, controller.addReservation);
 
 export = router;

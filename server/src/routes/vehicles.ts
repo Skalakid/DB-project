@@ -4,14 +4,26 @@ import extractJWT from '../middleware/extractJWT';
 
 const router = express.Router();
 
-router.get('/get/all/unavailable', controller.getAllUnavailableVehicles);
-router.get('/get/all/available', controller.getAllAvailableVehicles);
-router.get('/get/rented/user', controller.getAllCurrentlyRentedVehicles);
-router.post('/update/position', controller.updateVehiclePosition);
-router.get('/get/models', controller.getVehicleModels);
-router.get('/get/batteries', controller.getVehicleBatteries);
-router.post('/add', controller.addVehicle);
-router.post('/toggle/status', controller.toggleVehicleStatus);
-router.post('/update/energylvl', controller.changeEnergy);
+router.get(
+  '/get/all/unavailable',
+  extractJWT,
+  controller.getAllUnavailableVehicles
+);
+router.get(
+  '/get/all/available',
+  extractJWT,
+  controller.getAllAvailableVehicles
+);
+router.get(
+  '/get/rented/user',
+  extractJWT,
+  controller.getAllCurrentlyRentedVehicles
+);
+router.post('/update/position', extractJWT, controller.updateVehiclePosition);
+router.get('/get/models', extractJWT, controller.getVehicleModels);
+router.get('/get/batteries', extractJWT, controller.getVehicleBatteries);
+router.post('/add', extractJWT, controller.addVehicle);
+router.post('/toggle/status', extractJWT, controller.toggleVehicleStatus);
+router.post('/update/energylvl', extractJWT, controller.changeEnergy);
 
 export = router;
