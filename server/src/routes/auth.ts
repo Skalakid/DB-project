@@ -8,6 +8,7 @@ router.get('/validate', extractJWT, controller.validateToken);
 router.post('/refresh/token', controller.refreshToken);
 router.post('/login', controller.login);
 router.post('/register', controller.register);
-router.delete('/logout', extractJWT, controller.logout);
+router.delete('/logout', controller.logout);
+router.post('/change/password', controller.changePassword);
 
 export = router;

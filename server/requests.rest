@@ -75,13 +75,11 @@ GET http://localhost:3000/users/stats?userId=121
 GET http://localhost:3000/vehicles/get/rented/user?userId=121
 
 ################################################################
-POST http://localhost:3000/vehicles/update/position
+POST http://localhost:3000/users/delete
 Content-Type: application/json
 
 {
-    "vehicleId": 11,
-    "lat": 50.01729,
-    "lng": 19.9187
+    "userId": 4
 }
 
 ########

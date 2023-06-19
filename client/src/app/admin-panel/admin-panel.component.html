@@ -118,10 +118,31 @@
     </div>
 
     <div class="changeVehicleData tile">
-      <p class="form-title">Lista hulajnóg</p>
+      <p class="form-title">Lista uytkowników</p>
+
+      <div class="user" *ngFor="let user of allUsers">
+        <div class="userInfo">
+          <p class="box">{{ user.userId }}</p>
+          <p class="box">{{ user.firstName }}</p>
+          <p class="box">{{ user.lastName }}</p>
+          <p class="box">{{ user.email }}</p>
+        </div>
+        <button
+          *ngIf="changingPasswordUserId !== user.userId"
+          class="button changeBox"
+          (click)="startChangingPassword(user.userId)">
+          Change password
+        </button>
+        <div
+          class="change changeBox"
+          *ngIf="changingPasswordUserId === user.userId">
+          <input type="text" name="newPassword" [(ngModel)]="newPassword" />
+          <button class="button" (click)="changePassword()">Change</button>
+        </div>
+      </div>
     </div>
 
-    <div class="mapInformation tile">
+    <div class="vehicleInfo tile">
       <p class="form-title">INFO</p>
 
       <div *ngIf="selectedMarker.marker !== null">

@@ -21,10 +21,10 @@
   row-gap: 30px;
   column-gap: 15px;
   grid-template-areas:
-    'newvehicle userReservations userReservations userReservations mapInformation'
-    'newvehicle userReservations userReservations userReservations mapInformation'
-    'changeVehicleData placeholder placeholder placeholder placeholder'
-    'changeVehicleData placeholder placeholder placeholder placeholder';
+    'newvehicle userReservations userReservations userReservations vehicleInfo'
+    'newvehicle userReservations userReservations userReservations vehicleInfo'
+    'changeVehicleData changeVehicleData changeVehicleData changeVehicleData vehicleInfo'
+    'changeVehicleData changeVehicleData changeVehicleData changeVehicleData vehicleInfo';
 }
 
 .tile {
@@ -49,11 +49,6 @@
 }
 
 .mapInfo {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
   grid-area: mapInformation;
 }
 
@@ -138,9 +133,12 @@ label {
   grid-area: changeVehicleData;
 }
 
-.rentals {
-  width: 90%;
-  height: 10%;
+.vehicleInfo {
+  grid-area: vehicleInfo;
+}
+
+.user {
+  width: 95%;
   background-color: rgba(233, 134, 68, 0.5);
   border: 1px solid rgb(223, 92, 11);
   border-radius: 10px;
@@ -150,6 +148,7 @@ label {
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
+  padding: 5px;
 }
 
 .rentals .price-box {
@@ -196,10 +195,12 @@ label {
   padding: 10px;
 }
 
-.changeVehicleData {
+.changeVehicleData,
+.vehicleInfo {
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: auto;
 }
 
 .test {
@@ -235,12 +236,50 @@ label {
   flex-direction: column;
 }
 
-.button,
+.buttons > .button,
 .energyLvl {
   margin-bottom: 10px;
 }
 
 .energyLvl {
   width: 50%;
+  padding: 5px;
+}
+
+.box {
+  flex: 1;
+}
+
+.user > .button {
+  margin-left: 5px;
+}
+
+.userInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.userInfo > p {
+  font-size: 14px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.changeBox {
+  width: 200px;
+}
+
+.change {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.changeBox > input {
+  width: 90px;
   padding: 5px;
 }

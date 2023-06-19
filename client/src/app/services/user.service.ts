@@ -33,4 +33,15 @@ export class UserService {
       }
     }
   }
+
+  async getAllUsers() {
+    try {
+      const res = await get('/users/get/all', {})();
+      return res;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
+  }
 }

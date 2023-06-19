@@ -2,8 +2,11 @@ import { Component } from '@angular/core';
 import { Marker } from '../models/Marker';
 import { Reservation } from '../models/Reservation';
 import { SelectedMarker } from '../models/SelectedMarker';
+import { User } from '../models/User';
 import { Vehicle } from '../models/Vehicle';
+import { AuthService } from '../services/auth.service';
 import { MapService } from '../services/map.service';
+import { UserService } from '../services/user.service';
 import { VehiclesService } from '../services/vehicles.service';
 
 @Component({
@@ -98,9 +101,12 @@ export class AdminPanelComponent {
 
   newEnergy = 0;
 
+  allUsers: User[] = [];
+
   constructor(
-    private _mapService: MapService,
-    private _vehiclesService: VehiclesService
+    private _userService: UserService,
+    private _vehiclesService: VehiclesService,
+    private _authService: AuthService
   ) {
     this._vehiclesService.models.subscribe(models => {
       this.vehicleModels = models || [];
@@ -124,6 +130,12 @@ export class AdminPanelComponent {
       this.unavailableMarkers = vehicles || [];
       this.updateSelectedVehice();
     });
+
+    this.getUsers();
+  }
+
+  async getUsers() {
+    this.allUsers = (await this._userService.getAllUsers()) || [];
   }
 
   showUserRentals(): void {
@@ -296,5 +308,23 @@ export class AdminPanelComponent {
     return this.selectedMarker.marker?.costPerMinute
       ? this.selectedMarker.marker?.costPerMinute.toFixed(2)
       : 0;
+  }
+
+  changingPasswordUserId = -1;
+  newPassword = '';
+
+  startChangingPassword(userId: number) {
+    this.changingPasswordUserId = userId;
+  }
+
+  changePassword() {
+    if (this.newPassword.length > 0) {
+      this._authService.changePassword(
+        this.changingPasswordUserId,
+        this.newPassword
+      );
+      this.newPassword = '';
+      this.changingPasswordUserId = -1;
+    }
   }
 }

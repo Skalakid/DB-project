@@ -80,4 +80,16 @@ export class AuthService {
       this.logout();
     }
   };
+
+  changePassword = async (userId: number, newPassword: string) => {
+    try {
+      const res = await post('/auth/change/password', {
+        userId,
+        newPassword,
+      })();
+      return res;
+    } catch (error) {
+      if (error instanceof Error) console.error(error.message);
+    }
+  };
 }

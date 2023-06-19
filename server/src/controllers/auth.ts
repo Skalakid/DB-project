@@ -120,10 +120,37 @@ const logout = (req: Request, res: Response) => {
   return res.status(204);
 };
 
+const changePassword = async (req: Request, res: Response) => {
+  try {
+    const { userId, newPassword } = req.body;
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const query = `UPDATE users SET PASSWORD = :1 WHERE USER_ID = :2`;
+    const conn = await oracle.connect();
+    conn?.execute<(string | number)[]>(
+      query,
+      [hashedPassword, userId],
+      { autoCommit: true },
+      (error, result) => {
+        if (error) {
+          return res.status(500).json({
+            message: error.message,
+            error,
+          });
+        } else {
+          return res.status(201).json(result);
+        }
+      }
+    );
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+};
+
 export default {
   validateToken,
   refreshToken,
   register,
   login,
   logout,
+  changePassword,
 };
