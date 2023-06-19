@@ -12,5 +12,7 @@ router.get('/get/models', controller.getVehicleModels);
 router.get('/get/batteries', controller.getVehicleBatteries);
 router.post('/add', controller.addVehicle);
 router.post('/toggle/status', controller.toggleVehicleStatus);
+router.post('/update/energylvl', controller.changeEnergy);
+router.post('/update/cost', controller.changeCost);
 
 export = router;

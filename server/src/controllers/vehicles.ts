@@ -40,7 +40,7 @@ const getAllAvailableVehicles = async (req: Request, res: Response) => {
 
 const getAllUnavailableVehicles = async (req: Request, res: Response) => {
   try {
-    const query = `SELECT VEHICLE_ID, MODEL_ID, LAT_CORDS, LNG_CORDS, COST_PER_MINUTE FROM vehicle WHERE STATUS = 'Not available'`;
+    const query = `SELECT VEHICLE_ID, MODEL_ID, LAT_CORDS, LNG_CORDS, TO_CHAR(DURATION), ENERGY_LEVEL, COST_PER_MINUTE FROM unavailable_vehicles`;
     const conn = await oracle.connect();
     conn?.execute<(string | number)[]>(
       query,
@@ -234,6 +234,60 @@ const toggleVehicleStatus = async (req: Request, res: Response) => {
   }
 };
 
+const changeEnergy = async (req: Request, res: Response) => {
+  try {
+    const { vehicleId, energyLevel } = req.body;
+    const query = `UPDATE vehicle
+    SET ENERGY_LEVEL = :1
+    WHERE vehicle_id = :2`;
+    const conn = await oracle.connect();
+    conn?.execute(
+      query,
+      [energyLevel, vehicleId],
+      { autoCommit: true },
+      (error, result) => {
+        if (error) {
+          return res.status(500).json({
+            message: error.message,
+            error,
+          });
+        } else {
+          return res.status(201).json(result);
+        }
+      }
+    );
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+const changeCost = async (req: Request, res: Response) => {
+  try {
+    const { vehicleId, cost } = req.body;
+    const query = `UPDATE vehicle
+    SET COST_PER_MINUTE = :1
+    WHERE vehicle_id = :2`;
+    const conn = await oracle.connect();
+    conn?.execute(
+      query,
+      [cost, vehicleId],
+      { autoCommit: true },
+      (error, result) => {
+        if (error) {
+          return res.status(500).json({
+            message: error.message,
+            error,
+          });
+        } else {
+          return res.status(201).json(result);
+        }
+      }
+    );
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
 export default {
   getAllAvailableVehicles,
   getAllUnavailableVehicles,
@@ -243,4 +297,6 @@ export default {
   addVehicle,
   getVehicleBatteries,
   toggleVehicleStatus,
+  changeEnergy,
+  changeCost,
 };

@@ -196,4 +196,36 @@ export class VehiclesService {
       }
     }
   }
+
+  async updateEnergyLevel(vehicleId: number, energyLevel: number) {
+    try {
+      const res = await post('/vehicles/update/energylvl', {
+        vehicleId,
+        energyLevel,
+      })();
+      this.getAvaliableVehicles();
+      this.getAllUnavailableVehicles();
+      return res;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
+  }
+
+  async updateCost(vehicleId: number, cost: number) {
+    try {
+      const res = await post('/vehicles/update/cost', {
+        vehicleId,
+        cost,
+      })();
+      this.getAvaliableVehicles();
+      this.getAllUnavailableVehicles();
+      return res;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
+  }
 }

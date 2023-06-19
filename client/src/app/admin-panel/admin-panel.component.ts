@@ -12,10 +12,6 @@ import { VehiclesService } from '../services/vehicles.service';
   styleUrls: ['./admin-panel.component.scss'],
 })
 export class AdminPanelComponent {
-  userRentals: Reservation[] = generateData();
-  vehicleRentals: Reservation[] = generateData2();
-  allVehicles: Vehicle[] = generateData3();
-
   zoom = 12;
   center: google.maps.LatLngLiteral = { lat: 50.0647, lng: 19.945 };
   options: google.maps.MapOptions = {
@@ -100,6 +96,9 @@ export class AdminPanelComponent {
 
   isMoving = false;
 
+  newEnergy = 0;
+  newCost = 0;
+
   constructor(
     private _mapService: MapService,
     private _vehiclesService: VehiclesService
@@ -149,15 +148,14 @@ export class AdminPanelComponent {
         this.isCreatingNewMarker = true;
       }
     else {
-      this.isMoving = false;
-
       if (this.selectedMarker.marker?.vehicleId)
         await this._vehiclesService.updatePosition(
           this.selectedMarker.marker.vehicleId,
           event.latLng?.lat() || 0,
           event.latLng?.lng() || 0
         );
-
+      this.isMoving = false;
+      this.newEnergy = 0;
       this.selectedMarker.marker = null;
     }
   }
@@ -252,135 +250,39 @@ export class AdminPanelComponent {
       this.isMoving = false;
     }
   }
-}
 
-function generateData(): Reservation[] {
-  const rentals: Reservation[] = [];
+  changeEnergy() {
+    if (
+      this.selectedMarker.marker?.vehicleId &&
+      this.newEnergy >= 0 &&
+      this.newEnergy <= 100
+    )
+      this._vehiclesService.updateEnergyLevel(
+        this.selectedMarker.marker.vehicleId,
+        this.newEnergy
+      );
+    this.isMoving = false;
+    this.newEnergy = 0;
+  }
 
-  const rental1: Reservation = {
-    reservationId: 1,
-    vehicleId: 3,
-    userId: 5,
-    r_begin: '12.05.2023',
-    r_end: '12.05.2023',
-    duration: '+0 00:05:00',
-    cost: 17.21,
-  };
+  roundToTwo(num: number) {
+    return Math.round(num * 100) / 100;
+  }
 
-  const rental2: Reservation = {
-    reservationId: 1,
-    vehicleId: 3,
-    userId: 5,
-    r_begin: '12.05.2023',
-    r_end: '12.05.2023',
-    duration: '+0 00:05:00',
-    cost: 17.21,
-  };
+  getCostString() {
+    return this.selectedMarker.marker?.costPerMinute
+      ? this.selectedMarker.marker?.costPerMinute.toFixed(2)
+      : 0;
+  }
 
-  const rental3: Reservation = {
-    reservationId: 1,
-    vehicleId: 3,
-    userId: 5,
-    r_begin: '12.05.2023',
-    r_end: '12.05.2023',
-    duration: '+0 00:05:00',
-    cost: 17.21,
-  };
-
-  const rental4: Reservation = {
-    reservationId: 1,
-    vehicleId: 3,
-    userId: 5,
-    r_begin: '12.05.2023',
-    r_end: '12.05.2023',
-    duration: '+0 00:05:00',
-    cost: 17.21,
-  };
-
-  rentals.push(rental1, rental2, rental3, rental4);
-
-  return rentals;
-}
-
-function generateData2(): Reservation[] {
-  const rentals: Reservation[] = [];
-
-  const rental1: Reservation = {
-    reservationId: 1,
-    vehicleId: 3,
-    userId: 5,
-    r_begin: '12.05.2023',
-    r_end: '12.05.2023',
-    duration: '+0 00:05:00',
-    cost: 17.21,
-  };
-
-  const rental2: Reservation = {
-    reservationId: 1,
-    vehicleId: 3,
-    userId: 5,
-    r_begin: '12.05.2023',
-    r_end: '12.05.2023',
-    duration: '+0 00:05:00',
-    cost: 17.21,
-  };
-
-  const rental3: Reservation = {
-    reservationId: 1,
-    vehicleId: 3,
-    userId: 5,
-    r_begin: '12.05.2023',
-    r_end: '12.05.2023',
-    duration: '+0 00:05:00',
-    cost: 17.21,
-  };
-
-  const rental4: Reservation = {
-    reservationId: 1,
-    vehicleId: 3,
-    userId: 5,
-    r_begin: '12.05.2023',
-    r_end: '12.05.2023',
-    duration: '+0 00:05:00',
-    cost: 17.21,
-  };
-
-  rentals.push(rental1, rental2, rental3, rental4);
-
-  return rentals;
-}
-
-function generateData3(): Vehicle[] {
-  const vehicles: Vehicle[] = [];
-
-  const vehicle1: Vehicle = {
-    type: 'A',
-    model: 'A3',
-    length: 1.23,
-    width: 1.73,
-    weight: 10.0,
-    amount: 5,
-  };
-
-  const vehicle2: Vehicle = {
-    type: 'A',
-    model: 'A11',
-    length: 1.43,
-    width: 1.11,
-    weight: 3.21,
-    amount: 2,
-  };
-
-  const vehicle3: Vehicle = {
-    type: 'B',
-    model: 'B1',
-    length: 3.33,
-    width: 12.1,
-    weight: 2.12,
-    amount: 2,
-  };
-
-  vehicles.push(vehicle1, vehicle2, vehicle3);
-
-  return vehicles;
+  changeCost() {
+    const cost = this.roundToTwo(this.newCost);
+    if (this.selectedMarker.marker?.vehicleId && cost >= 0)
+      this._vehiclesService.updateCost(
+        this.selectedMarker.marker.vehicleId,
+        cost
+      );
+    this.isMoving = false;
+    this.newCost = 0;
+  }
 }

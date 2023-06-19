@@ -104,3 +104,40 @@ begin
     values (u_id, v_id, current_date, current_date + p_duration);
 end;
 /
+
+create procedure add_vehicle(modelID varchar2, batteryCode varchar2, lat float, lng float, vehicleStatus varchar2, energyLvl int, costPerMinute float) as
+b_count pls_integer;
+begin
+    select count(*) into b_count from BATTERY B where BATTERY_CODE = batteryCode;
+    if b_count = 0 then
+        raise_application_error(-20004, 'No such a battery');
+    end if;
+
+    insert into VEHICLE(MODEL_ID, BATTERY_CODE, LAT_CORDS, LNG_CORDS, STATUS, ENERGY_LEVEL, COST_PER_MINUTE)
+    values (modelID, batteryCOde, lat, lng, vehicleStatus, energyLvl, costPerMinute);
+end;
+/
+
+create PROCEDURE toggle_vehicle_status(
+    p_vehicleId IN NUMBER
+)
+AS
+    v_vehicleState VARCHAR2(20);
+BEGIN
+    SELECT STATUS
+    INTO v_vehicleState
+    FROM vehicles
+    WHERE vehicle_id = p_vehicleId;
+
+    IF v_vehicleState = 'Available' THEN
+        UPDATE vehicles
+        SET STATUS = 'Not available'
+        WHERE vehicle_id = p_vehicleId;
+    ELSE
+        UPDATE vehicles
+        SET STATUS = 'Available'
+        WHERE vehicle_id = p_vehicleId;
+    END IF;
+END;
+/
+

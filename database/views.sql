@@ -33,6 +33,17 @@ select v.VEHICLE_ID, v.MODEL_ID, v.LAT_CORDS, v.LNG_CORDS, b.MAX_DURATION * v.EN
     where cr.VEHICLE_ID is null and v.STATUS like 'Available' and v.ENERGY_LEVEL > 0
 /
 
+create or replace view UNAVAILABLE_VEHICLES as
+select v.VEHICLE_ID, v.MODEL_ID, v.LAT_CORDS, v.LNG_CORDS, b.MAX_DURATION * v.ENERGY_LEVEL / 100 as duration,
+       v.ENERGY_LEVEL, v.COST_PER_MINUTE
+    from VEHICLE v
+    join BATTERY b
+    on v.BATTERY_CODE = b.BATTERY_CODE
+    left join CURRENT_RESERVATIONS cr
+    on v.VEHICLE_ID = cr.VEHICLE_ID
+    where cr.VEHICLE_ID is null and v.STATUS like 'Not available'
+/
+
 create view RESERVATIONS as
 select r.RESERVATION_ID, r.USER_ID, r.VEHICLE_ID, r.R_BEGIN, r.R_END,
            ((extract(day from CAST(r.R_END as timestamp)) -
