@@ -40,7 +40,7 @@ const getAllAvailableVehicles = async (req: Request, res: Response) => {
 
 const getAllUnavailableVehicles = async (req: Request, res: Response) => {
   try {
-    const query = `SELECT VEHICLE_ID, MODEL_ID, LAT_CORDS, LNG_CORDS, TO_CHAR(DURATION), COST_PER_MINUTE FROM vehicle WHERE STATUS = 'Not available'`;
+    const query = `SELECT VEHICLE_ID, MODEL_ID, LAT_CORDS, LNG_CORDS, COST_PER_MINUTE FROM vehicle WHERE STATUS = 'Not available'`;
     const conn = await oracle.connect();
     conn?.execute<(string | number)[]>(
       query,
@@ -197,16 +197,27 @@ const addVehicle = async (req: Request, res: Response) => {
       energyLvl,
       costPerMinute,
     } = req.body;
-    console.log(
-      modelID,
-      batteryCode,
-      lat,
-      lng,
-      vehicleStatus,
-      energyLvl,
-      costPerMinute
-    );
     const query = `begin add_vehicle('${modelID}','${batteryCode}',${lat},${lng},'${vehicleStatus}',${energyLvl},${costPerMinute}); end;`;
+    const conn = await oracle.connect();
+    conn?.execute(query, [], { autoCommit: true }, (error, result) => {
+      if (error) {
+        return res.status(500).json({
+          message: error.message,
+          error,
+        });
+      } else {
+        return res.status(201).json(result);
+      }
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+const toggleVehicleStatus = async (req: Request, res: Response) => {
+  try {
+    const { vehicleId } = req.body;
+    const query = `begin TOGGLE_VEHICLE_STATUS('${vehicleId}'); end;`;
     const conn = await oracle.connect();
     conn?.execute(query, [], { autoCommit: true }, (error, result) => {
       if (error) {
@@ -231,4 +242,5 @@ export default {
   getVehicleModels,
   addVehicle,
   getVehicleBatteries,
+  toggleVehicleStatus,
 };

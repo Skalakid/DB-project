@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Marker } from '../models/Marker';
 import { Reservation } from '../models/Reservation';
+import { SelectedMarker } from '../models/SelectedMarker';
 import { Vehicle } from '../models/Vehicle';
 import { MapService } from '../services/map.service';
 import { VehiclesService } from '../services/vehicles.service';
@@ -29,12 +30,53 @@ export class AdminPanelComponent {
     scaledSize: new google.maps.Size(50, 50),
   };
 
+  rentedIcon = {
+    url: '../../assets/mark1.png',
+    scaledSize: new google.maps.Size(50, 50),
+  };
+
+  unavailableIcon = {
+    url: '../../assets/mark2.png',
+    scaledSize: new google.maps.Size(50, 50),
+  };
+
   isCreatingNewMarker = false;
+
+  selectedMarker: SelectedMarker = {
+    type: 'available',
+    marker: null,
+  };
 
   markerOptions: google.maps.MarkerOptions = {
     draggable: false,
     animation: null,
     icon: this.normalIcon,
+  };
+  rentedMarkerOptions: google.maps.MarkerOptions = {
+    draggable: false,
+    animation: null,
+    icon: this.rentedIcon,
+  };
+  unavailableMarkerOptions: google.maps.MarkerOptions = {
+    draggable: false,
+    animation: null,
+    icon: this.unavailableIcon,
+  };
+
+  selectedMarkerOptions: google.maps.MarkerOptions = {
+    draggable: false,
+    animation: google.maps.Animation.BOUNCE,
+    icon: this.normalIcon,
+  };
+  selectedRentedMarkerOptions: google.maps.MarkerOptions = {
+    draggable: false,
+    animation: google.maps.Animation.BOUNCE,
+    icon: this.rentedIcon,
+  };
+  selectedUnavailableMarkerOptions: google.maps.MarkerOptions = {
+    draggable: false,
+    animation: google.maps.Animation.BOUNCE,
+    icon: this.unavailableIcon,
   };
 
   userVisible = false;
@@ -55,6 +97,8 @@ export class AdminPanelComponent {
   energyLvl = 0;
   latCords = 0;
   lngCords = 0;
+
+  isMoving = false;
 
   constructor(
     private _mapService: MapService,
@@ -95,15 +139,31 @@ export class AdminPanelComponent {
     console.log(this.Id);
   }
 
-  selectCords(event: google.maps.MapMouseEvent) {
-    this.lngCords = event.latLng?.lng() || 0;
-    this.latCords = event.latLng?.lat() || 0;
-    this.isCreatingNewMarker = true;
+  async selectCords(event: google.maps.MapMouseEvent) {
+    if (!this.isMoving)
+      if (this.selectedMarker.marker) {
+        this.selectedMarker.marker = null;
+      } else {
+        this.lngCords = event.latLng?.lng() || 0;
+        this.latCords = event.latLng?.lat() || 0;
+        this.isCreatingNewMarker = true;
+      }
+    else {
+      this.isMoving = false;
+
+      if (this.selectedMarker.marker?.vehicleId)
+        await this._vehiclesService.updatePosition(
+          this.selectedMarker.marker.vehicleId,
+          event.latLng?.lat() || 0,
+          event.latLng?.lng() || 0
+        );
+
+      this.selectedMarker.marker = null;
+    }
   }
 
   addVehicle() {
     const status = this.available ? 'Available' : 'Not available';
-    console.log(this.selectedModel, this.selectedBatteryCode, status);
 
     if (
       this.isCreatingNewMarker &&
@@ -131,6 +191,66 @@ export class AdminPanelComponent {
     this.energyLvl = 0;
     this.latCords = 0;
     this.lngCords = 0;
+  }
+
+  selectAvailableVehice(index: number) {
+    if (!this.isMoving)
+      if (this.availableMarkers?.[index]) {
+        this.selectedMarker = {
+          type: 'available',
+          marker: this.availableMarkers[index],
+        };
+      }
+  }
+
+  selectUnavailableVehice(index: number) {
+    if (!this.isMoving)
+      if (this.unavailableMarkers?.[index]) {
+        this.selectedMarker = {
+          type: 'unavailable',
+          marker: this.unavailableMarkers[index],
+        };
+      }
+  }
+
+  selectRentedVehicle(index: number) {
+    if (!this.isMoving)
+      if (this.rentedMarkers?.[index]) {
+        this.selectedMarker = {
+          type: 'rented',
+          marker: this.rentedMarkers[index],
+        };
+      }
+  }
+
+  async toggleVehicleStatus() {
+    if (!this.isMoving)
+      if (this.selectedMarker.marker?.vehicleId) {
+        await this._vehiclesService.toggleVehicleStatus(
+          this.selectedMarker.marker.vehicleId
+        );
+        this.selectedMarker.marker = null;
+      }
+  }
+
+  async startMoving() {
+    this.isMoving = true;
+  }
+
+  async move(event: google.maps.MapMouseEvent) {
+    if (this.isMoving) {
+      if (
+        this.selectedMarker.marker?.vehicleId &&
+        event.latLng?.lat &&
+        event.latLng?.lng
+      )
+        this._vehiclesService.updatePosition(
+          this.selectedMarker.marker.vehicleId,
+          event.latLng?.lat(),
+          event.latLng?.lng()
+        );
+      this.isMoving = false;
+    }
   }
 }
 

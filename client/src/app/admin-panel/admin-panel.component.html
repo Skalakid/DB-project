@@ -83,7 +83,36 @@
           *ngFor="let marker of availableMarkers; let i = index"
           [position]="{ lat: marker.latCords, lng: marker.lngCords }"
           [title]="marker.modelId"
-          [options]="markerOptions">
+          [options]="
+            selectedMarker.marker?.vehicleId === marker.vehicleId
+              ? selectedMarkerOptions
+              : markerOptions
+          "
+          (mapClick)="selectAvailableVehice(i)">
+        </map-marker>
+
+        <map-marker
+          *ngFor="let marker of unavailableMarkers; let i = index"
+          [position]="{ lat: marker.latCords, lng: marker.lngCords }"
+          [title]="marker.modelId"
+          [options]="
+            selectedMarker.marker?.vehicleId === marker.vehicleId
+              ? selectedUnavailableMarkerOptions
+              : unavailableMarkerOptions
+          "
+          (mapClick)="selectUnavailableVehice(i)">
+        </map-marker>
+
+        <map-marker
+          *ngFor="let marker of rentedMarkers; let i = index"
+          [position]="{ lat: marker.latCords, lng: marker.lngCords }"
+          [title]="marker.modelId"
+          [options]="
+            selectedMarker.marker?.vehicleId === marker.vehicleId
+              ? selectedRentedMarkerOptions
+              : rentedMarkerOptions
+          "
+          (mapClick)="selectRentedVehicle(i)">
         </map-marker>
       </google-map>
     </div>
@@ -105,6 +134,33 @@
         </div>
         <div class="price-box">
           <p>{{ vehicle.weight }} kg</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mapInformation tile">
+      <p class="form-title">INFO</p>
+
+      <div *ngIf="selectedMarker.marker !== null">
+        <p>Status: {{ selectedMarker.type }}</p>
+        <p>ID: {{ selectedMarker.marker.vehicleId }}</p>
+        <p>Model ID: {{ selectedMarker.marker.modelId }}</p>
+        <p>Energia: {{ selectedMarker.marker.energyLevel || '-' }}</p>
+
+        <div>
+          <button
+            class="button"
+            (click)="toggleVehicleStatus()"
+            [disabled]="isMoving">
+            {{ selectedMarker.type === 'available' ? 'Zablokuj' : 'Odblokuj' }}
+          </button>
+          <button
+            *ngIf="selectedMarker.type !== 'rented'"
+            class="button"
+            [disabled]="isMoving"
+            (click)="startMoving()">
+            Przemiść
+          </button>
         </div>
       </div>
     </div>

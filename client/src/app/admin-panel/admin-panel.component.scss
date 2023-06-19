@@ -21,10 +21,10 @@
   row-gap: 30px;
   column-gap: 15px;
   grid-template-areas:
-    'newvehicle userReservations userReservations changeVehicleData changeVehicleData'
-    'newvehicle userReservations userReservations changeVehicleData changeVehicleData'
-    'placeholder placeholder placeholder placeholder placeholder'
-    'placeholder placeholder placeholder placeholder placeholder';
+    'newvehicle userReservations userReservations userReservations mapInformation'
+    'newvehicle userReservations userReservations userReservations mapInformation'
+    'changeVehicleData changeVehicleData changeVehicleData placeholder placeholder'
+    'changeVehicleData changeVehicleData changeVehicleData placeholder placeholder';
 }
 
 .tile {
@@ -46,6 +46,15 @@
   justify-content: center;
   flex-direction: column;
   grid-area: newvehicle;
+}
+
+.mapInfo {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  grid-area: mapInformation;
 }
 
 .new-vehicle .input-group {

@@ -11,5 +11,6 @@ router.post('/update/position', controller.updateVehiclePosition);
 router.get('/get/models', controller.getVehicleModels);
 router.get('/get/batteries', controller.getVehicleBatteries);
 router.post('/add', controller.addVehicle);
+router.post('/toggle/status', controller.toggleVehicleStatus);
 
 export = router;

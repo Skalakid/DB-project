@@ -183,4 +183,17 @@ export class VehiclesService {
       }
     }
   }
+
+  async toggleVehicleStatus(vehicleId: number) {
+    try {
+      const res = await post('/vehicles/toggle/status', { vehicleId })();
+      this.getAvaliableVehicles();
+      this.getAllUnavailableVehicles();
+      return res;
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
+  }
 }
