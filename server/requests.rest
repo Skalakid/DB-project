@@ -1,4 +1,4 @@
-GET http://localhost:3000/auth/get/all
+GET http://localhost:3000/vehicles/get/all
 
 ################################
 
@@ -45,3 +45,43 @@ Content-Type: application/json
 {
     "token": "<refresh_token>"
 }
+
+
+##########################
+POST http://localhost:3000/vehicles/add
+Content-Type: application/json
+
+{
+      "modelID": "asd",
+      "batteryCode": "asd",
+      "lat": 19.833627172179984, 
+      "lng": 50.08401736513421,
+      "vehicleStatus": "Available",
+      "energyLvl": 98,
+      "costPerMinute": 4
+}
+
+################
+
+GET http://localhost:3000/users/reservations/current?userId=121
+
+
+###############
+
+GET http://localhost:3000/users/stats?userId=121
+
+
+################################################################
+GET http://localhost:3000/vehicles/get/rented/user?userId=121
+
+################################################################
+POST http://localhost:3000/users/delete
+Content-Type: application/json
+
+{
+    "userId": 4
+}
+
+########
+
+GET http://localhost:3000/vehicles/get/all/unavailable

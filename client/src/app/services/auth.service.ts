@@ -8,11 +8,12 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   currentUser = new BehaviorSubject<User | null>(null);
+  currentUserStats = new BehaviorSubject<User | null>(null);
+
   constructor(private _router: Router) {
     const user = localStorage.getItem('user');
     if (user) {
       this.currentUser.next(JSON.parse(user));
-      console.log('LOGGED INT', user);
     }
   }
 
@@ -26,7 +27,6 @@ export class AuthService {
       await localStorage.setItem('accessToken', res.accessToken);
       await localStorage.setItem('refreshToken', res.refreshToken);
       await localStorage.setItem('user', JSON.stringify(res));
-      console.log(await localStorage.getItem('refreshToken'));
       this.currentUser.next(res);
       this._router.navigate(['/']);
     } catch (error) {
@@ -35,15 +35,18 @@ export class AuthService {
   }
 
   async logout() {
-    try {
-      const refreshToken = await localStorage.getItem('refreshToken');
-      await _delete('/auth/logout', {
-        token: refreshToken,
-      })();
-    } catch (error) {
-      //
-    }
-    localStorage.clear();
+    // try {
+    //   const refreshToken = await localStorage.getItem('refreshToken');
+    //   await _delete('/auth/logout', {
+    //     token: refreshToken,
+    //   })();
+    // } catch (error) {
+    //   //
+    //   console.error(error.message);
+    // }
+    await localStorage.clear();
+    this.currentUser.next(null);
+    this.currentUserStats.next(null);
     this._router.navigate(['/login']);
   }
 
@@ -78,6 +81,18 @@ export class AuthService {
     } catch (error) {
       if (retryCount >= 0) this.refreshAccessToken(retryCount - 1);
       this.logout();
+    }
+  };
+
+  changePassword = async (userId: number, newPassword: string) => {
+    try {
+      const res = await post('/auth/change/password', {
+        userId,
+        newPassword,
+      })();
+      return res;
+    } catch (error) {
+      if (error instanceof Error) console.error(error.message);
     }
   };
 }

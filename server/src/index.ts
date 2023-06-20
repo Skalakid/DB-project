@@ -1,6 +1,8 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
-import userRoutes from './routes/user';
+import authRoutes from './routes/auth';
+import usersRoutes from './routes/user';
+import vehiclesRoutes from './routes/vehicles';
 
 dotenv.config();
 
@@ -20,7 +22,9 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server');
 });
 
-app.use('/auth', userRoutes);
+app.use('/auth', authRoutes);
+app.use('/users', usersRoutes);
+app.use('/vehicles', vehiclesRoutes);
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);

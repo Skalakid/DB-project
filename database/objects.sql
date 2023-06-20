@@ -29,6 +29,21 @@ create type vehicle_data as object
     cost_per_minute real
 );
 
+create or replace type user_stats as object
+(
+    USER_ID int,
+    FIRSTNAME varchar2(50),
+    LASTNAME varchar2(50),
+    E_MAIL varchar2(50),
+    PHONE varchar2(12),
+    NO_RESERVATIONS int,
+    TOTAL_COST float
+)
+/
+
+create or replace type USER_STATS_TABLE as table of user_stats
+/
+
 create type USER_RESERVATION_TABLE as table of USER_RESERVATION
 /
 

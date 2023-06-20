@@ -4,11 +4,14 @@ import extractJWT from '../middleware/extractJWT';
 
 const router = express.Router();
 
-router.get('/validate', extractJWT, controller.validateToken);
-router.post('/refresh/token', controller.refreshToken);
-router.post('/login', controller.login);
-router.post('/register', controller.register);
 router.get('/get/all', controller.getAllUsers);
-router.delete('/logout', extractJWT, controller.logout);
+
+router.get('/stats', controller.getUserStats);
+
+router.get('/reservations/all', controller.getUserReservations);
+
+router.get('/reservations/current', controller.getUserCurrentReservations);
+
+router.post('/reservations/add', controller.addReservation);
 
 export = router;

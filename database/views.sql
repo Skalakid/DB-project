@@ -33,6 +33,17 @@ select v.VEHICLE_ID, v.MODEL_ID, v.LAT_CORDS, v.LNG_CORDS, b.MAX_DURATION * v.EN
     where cr.VEHICLE_ID is null and v.STATUS like 'Available' and v.ENERGY_LEVEL > 0
 /
 
+create or replace view UNAVAILABLE_VEHICLES as
+select v.VEHICLE_ID, v.MODEL_ID, v.LAT_CORDS, v.LNG_CORDS, b.MAX_DURATION * v.ENERGY_LEVEL / 100 as duration,
+       v.ENERGY_LEVEL, v.COST_PER_MINUTE
+    from VEHICLE v
+    join BATTERY b
+    on v.BATTERY_CODE = b.BATTERY_CODE
+    left join CURRENT_RESERVATIONS cr
+    on v.VEHICLE_ID = cr.VEHICLE_ID
+    where cr.VEHICLE_ID is null and v.STATUS like 'Not available'
+/
+
 create view RESERVATIONS as
 select r.RESERVATION_ID, r.USER_ID, r.VEHICLE_ID, r.R_BEGIN, r.R_END,
            ((extract(day from CAST(r.R_END as timestamp)) -
@@ -67,4 +78,11 @@ select m.MODEL_ID, m.LENGTH_M, m.WIDTH_M, m.WEIGHT_KG, count(v.VEHICLE_ID) as to
     left join VEHICLE v
     on m.MODEL_ID = v.MODEL_ID
     group by m.MODEL_ID, m.LENGTH_M, m.WIDTH_M, m.WEIGHT_KG
+/
+
+create or replace view RENTED_VEHICLES as
+SELECT USER_ID, v.VEHICLE_ID, v.MODEL_ID, v.LAT_CORDS, v.LNG_CORDS, b.MAX_DURATION * v.ENERGY_LEVEL / 100 as duration,
+v.ENERGY_LEVEL, v.COST_PER_MINUTE FROM CURRENT_RESERVATIONS INNER JOIN VEHICLE V
+on CURRENT_RESERVATIONS.VEHICLE_ID = V.VEHICLE_ID join BATTERY b
+on v.BATTERY_CODE = b.BATTERY_CODE
 /

@@ -5,53 +5,128 @@
       <div class="text">
         <p>Ostatnie wypożyczenia</p>
       </div>
-      <div class="rentals" *ngFor="let rental of rentals">
-        <div class="date-box">
-          <p>{{ rental.date }}</p>
+
+      <div class="rentals">
+        <div class="box">
+          <p>Data</p>
         </div>
-        <div class="duration-box">
-          <p>{{ rental.duration }} minut</p>
+        <div class="box">
+          <p>Czas trwania</p>
         </div>
-        <div class="price-box">
-          <p>{{ rental.price }}zł</p>
+        <div class="box">
+          <p>Cena</p>
+        </div>
+      </div>
+
+      <div class="rentals" *ngFor="let reservation of reservations">
+        <div class="box date-box">
+          <p>{{ formatDate(reservation.r_end) }}</p>
+        </div>
+        <div class="box duration-box">
+          <p>{{ reservation.duration }}</p>
+        </div>
+        <div class="box price-box">
+          <p>{{ reservation.cost }}zł</p>
         </div>
       </div>
     </div>
     <div class="tile tile-welcome">
-      <p>
+      <p *ngIf="selectedMarker === null && selectedRentedMarker === null">
         Cześć <b>{{ firstName }}</b
         >!
       </p>
+
+      <div
+        class="selected-vehicle"
+        *ngIf="selectedMarker !== null || selectedRentedMarker !== null">
+        <div class="selected-vehicle-info">
+          <p>
+            ID:
+            {{ selectedRentedMarker?.vehicleId || selectedMarker?.vehicleId }}
+          </p>
+          <p>
+            Model:
+            {{ selectedRentedMarker?.modelId || selectedMarker?.modelId }}
+          </p>
+          <p>
+            Stan baterii:
+            {{
+              selectedRentedMarker?.energyLevel || selectedMarker?.energyLevel
+            }}
+          </p>
+          <p>
+            Koszt za minutę:
+            {{
+              roundPrice(
+                selectedRentedMarker?.costPerMinute ||
+                  selectedMarker?.costPerMinute ||
+                  0
+              )
+            }}
+          </p>
+        </div>
+
+        <div class="right-side">
+          <select
+            #duration
+            *ngIf="selectedRentedMarker === null"
+            (change)="onTimeChange(duration.value)"
+            (click)="onTimeChange(duration.value)">
+            <option>5 min</option>
+            <option>10 min</option>
+            <option>15 min</option>
+          </select>
+
+          <button
+            class="button"
+            [disabled]="isMoving"
+            (click)="
+              selectedRentedMarker !== null ? move() : makeReservation()
+            ">
+            {{ selectedRentedMarker !== null ? 'Przemieść' : 'Zarezerwuj' }}
+          </button>
+        </div>
+      </div>
     </div>
     <div class="tile tile-map">
       <div class="map">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2560.9867805971976!2d19.909212075512883!3d50.06780921484239!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47165ba4e83edb79%3A0x12ec23c8f9c73c78!2sCentrum%20Informatyki%2C%20AGH%2C%20D-17!5e0!3m2!1spl!2spl!4v1686183341375!5m2!1spl!2spl"
-          frameborder="0"
-          style="border: 0"
-          allowfullscreen=""
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <app-map></app-map>
       </div>
     </div>
 
     <div class="tile tile-resume">
       <div class="content-1">
-        <p class="text">Jesteś już z nami</p>
-        <p class="value">{{ length }} km!</p>
+        <p class="text">Obecne koszta:</p>
+        <p class="value">{{ getPrice() || '-' }} zł</p>
       </div>
       <div class="content-2">
         <p class="text">Wypożyczyłeś aż</p>
-        <p class="value">{{ amount }} hulajnóg!</p>
+        <p class="value">{{ stats?.noReservations || '-' }} hulajnóg!</p>
       </div>
     </div>
     <div class="tile tile-actual-rental">
-      <p class="true" *ngIf="actual_reservation">
-        Aktualnie wypożyczasz pojazd!
-      </p>
-      <p class="false" *ngIf="!actual_reservation">
+      <p *ngIf="currentReservations.length === 0">
         Brak aktualnych wypożyczeń!
       </p>
+      <p class="title" *ngIf="currentReservations.length !== 0">
+        Ostatnie wypożyczenia
+      </p>
+      <div
+        disabled
+        class="current-reservation"
+        *ngIf="currentReservations.length !== 0">
+        <p>Nr.</p>
+        <p>ID</p>
+        <p>Do:</p>
+      </div>
+      <div
+        class="current-reservation-hoverable"
+        *ngFor="let reservation of currentReservations; let i = index"
+        (click)="selectOnMap(i)">
+        <p>{{ i + 1 }}</p>
+        <p>{{ reservation.vehicleId }}</p>
+        <p>{{ reservation.r_end }}</p>
+      </div>
     </div>
     <div class="socials">
       <a href=""><img class="icon" src="assets/facebook.png" /></a>

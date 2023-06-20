@@ -1,0 +1,198 @@
+<div class="bg">
+  <img src="assets/bg.jpg" />
+  <div class="content">
+    <form class="new-vehicle tile">
+      <p class="form-title">Formularz nowej hulajnogi</p>
+      <div class="input-group">
+        <label for="modelId">MODEL:</label>
+        <select name="battery" [(ngModel)]="selectedModel">
+          <option *ngFor="let model of vehicleModels" value="{{ model }}">
+            {{ model }}
+          </option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label for="batteryCode">BATERIA:</label>
+        <select name="battery" [(ngModel)]="selectedBatteryCode">
+          <option *ngFor="let model of vehicleBatteries" value="{{ model }}">
+            {{ model }}
+          </option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label for="length">LNG:</label>
+        <input type="text" id="length" name="length" value="{{ latCords }}" />
+      </div>
+      <div class="input-group">
+        <label for="width">LAT:</label>
+        <input type="text" id="width" name="width" value="{{ lngCords }}" />
+      </div>
+      <div class="input-group">
+        <label for="energyLvl">ENERGIA</label>
+        <input
+          type="number"
+          id="energyLvl"
+          name="energyLvl"
+          value="100"
+          max="100"
+          min="0"
+          [(ngModel)]="energyLvl" />
+      </div>
+      <div class="input-group">
+        <label for="costPerMinute">KOSZT NA MINUTE:</label>
+        <input
+          type="text"
+          id="costPerMinute"
+          name="costPerMinute"
+          value="{{ costPerMinute }}"
+          [(ngModel)]="costPerMinute" />
+      </div>
+      <div class="input-group-row">
+        <label for="available">DOSTĘPNA?</label>
+        <input
+          type="checkbox"
+          id="available"
+          name="available"
+          checked
+          [(ngModel)]="available" />
+      </div>
+
+      <input
+        type="submit"
+        class="submitButton"
+        value="Utwórz"
+        (click)="addVehicle()" />
+    </form>
+
+    <div class="reservations tile">
+      <google-map
+        class="test"
+        width="100%"
+        height="100%"
+        [zoom]="zoom"
+        [center]="center"
+        [options]="options"
+        (mapClick)="selectCords($event)">
+        <map-marker
+          *ngIf="isCreatingNewMarker"
+          [position]="{ lat: latCords, lng: lngCords }"
+          [options]="{
+            draggable: false,
+            animation: null,
+            icon: tmpIcon
+          }">
+        </map-marker>
+
+        <map-marker
+          *ngFor="let marker of availableMarkers; let i = index"
+          [position]="{ lat: marker.latCords, lng: marker.lngCords }"
+          [title]="marker.modelId"
+          [options]="{
+            draggable: false,
+            animation:
+              selectedMarker.marker?.vehicleId === marker.vehicleId
+                ? onSelectAnimation
+                : null,
+            icon: normalIcon
+          }"
+          (mapClick)="selectAvailableVehice(i)">
+        </map-marker>
+
+        <map-marker
+          *ngFor="let marker of unavailableMarkers; let i = index"
+          [position]="{ lat: marker.latCords, lng: marker.lngCords }"
+          [title]="marker.modelId"
+          [options]="{
+            draggable: false,
+            animation:
+              selectedMarker.marker?.vehicleId === marker.vehicleId
+                ? onSelectAnimation
+                : null,
+            icon: unavailableIcon
+          }"
+          (mapClick)="selectUnavailableVehice(i)">
+        </map-marker>
+
+        <map-marker
+          *ngFor="let marker of rentedMarkers; let i = index"
+          [position]="{ lat: marker.latCords, lng: marker.lngCords }"
+          [title]="marker.modelId"
+          [options]="{
+            draggable: false,
+            animation:
+              selectedMarker.marker?.vehicleId === marker.vehicleId
+                ? onSelectAnimation
+                : null,
+            icon: rentedIcon
+          }"
+          (mapClick)="selectRentedVehicle(i)">
+        </map-marker>
+      </google-map>
+    </div>
+
+    <div class="changeVehicleData tile">
+      <p class="form-title">Lista uytkowników</p>
+
+      <div class="user" *ngFor="let user of allUsers">
+        <div class="userInfo">
+          <p class="box">{{ user.userId }}</p>
+          <p class="box">{{ user.firstName }}</p>
+          <p class="box">{{ user.lastName }}</p>
+          <p class="box">{{ user.email }}</p>
+        </div>
+        <button
+          *ngIf="changingPasswordUserId !== user.userId"
+          class="button changeBox"
+          (click)="startChangingPassword(user.userId)">
+          Change password
+        </button>
+        <div
+          class="change changeBox"
+          *ngIf="changingPasswordUserId === user.userId">
+          <input type="text" name="newPassword" [(ngModel)]="newPassword" />
+          <button class="button" (click)="changePassword()">Change</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="vehicleInfo tile">
+      <p class="form-title">INFO</p>
+
+      <div *ngIf="selectedMarker.marker !== null">
+        <div class="info">
+          <p>Status: {{ selectedMarker.type }}</p>
+          <p>ID: {{ selectedMarker.marker.vehicleId }}</p>
+          <p>Model ID: {{ selectedMarker.marker.modelId }}</p>
+          <p class="energy">
+            Energia: {{ selectedMarker.marker?.energyLevel || '-' }}
+          </p>
+          <p class="cost">Koszt: {{ getCostString() }}</p>
+        </div>
+
+        <div class="buttons" *ngIf="selectedMarker.type !== 'rented'">
+          <button
+            class="button"
+            (click)="toggleVehicleStatus()"
+            [disabled]="isMoving">
+            {{ selectedMarker.type === 'available' ? 'Zablokuj' : 'Odblokuj' }}
+          </button>
+          <button class="button" [disabled]="isMoving" (click)="startMoving()">
+            Przemiść
+          </button>
+
+          <p>Energia:</p>
+          <input
+            class="energyLvl"
+            type="number"
+            max="100"
+            min="0"
+            step="1"
+            [(ngModel)]="newEnergy" />
+          <button class="button" [disabled]="isMoving" (click)="changeEnergy()">
+            Doładuj
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
