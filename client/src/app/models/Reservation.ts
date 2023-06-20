@@ -1,5 +1,5 @@
 export interface Reservation {
-  user_id: number;
+  userId: number;
   reservationId: number;
   vehicleId: number;
   r_begin: string;

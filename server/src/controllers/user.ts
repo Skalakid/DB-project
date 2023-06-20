@@ -3,7 +3,7 @@ import oracle from '../config/oracle';
 
 const getAllUsers = async (req: Request, res: Response) => {
   try {
-    const query = `SELECT USER_ID, firstname FROM users`;
+    const query = `SELECT USER_ID, firstname, lastname, e_mail FROM users`;
     const conn = await oracle.connect();
     conn?.execute<(string | number)[]>(
       query,
@@ -20,6 +20,8 @@ const getAllUsers = async (req: Request, res: Response) => {
           result.rows?.map(item => ({
             userId: item[0],
             firstName: item[1],
+            lastName: item[2],
+            email: item[3],
           }))
         );
       }

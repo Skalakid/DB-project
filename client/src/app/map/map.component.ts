@@ -5,6 +5,7 @@ import { UserStats } from '../models/User';
 import { Marker } from '../models/Marker';
 import { Reservation } from '../models/Reservation';
 import { MapService } from '../services/map.service';
+import { Icon } from '../models/Icon';
 
 @Component({
   selector: 'app-map',
@@ -21,44 +22,14 @@ export class MapComponent {
     clickableIcons: false,
   };
 
-  normalIcon = {
-    url: '../../assets/mark.png',
-    scaledSize: new google.maps.Size(50, 50),
-  };
+  onSelectAnimation = google.maps.Animation.BOUNCE;
 
-  rentedIcon = {
-    url: '../../assets/mark1.png',
-    scaledSize: new google.maps.Size(50, 50),
-  };
-
-  selectedIcon = {
-    url: '../../assets/mark2.png',
-    scaledSize: new google.maps.Size(50, 50),
-  };
+  normalIcon: Icon | null = null;
+  rentedIcon: Icon | null = null;
+  selectedIcon: Icon | null = null;
 
   markers: Marker[] = [];
   rentedMarkers: Marker[] = [];
-
-  markerOptions: google.maps.MarkerOptions = {
-    draggable: false,
-    animation: null,
-    icon: this.normalIcon,
-  };
-  rentedMarkerOptions: google.maps.MarkerOptions = {
-    draggable: false,
-    animation: null,
-    icon: this.rentedIcon,
-  };
-  selectedMarkerOptions: google.maps.MarkerOptions = {
-    draggable: false,
-    animation: google.maps.Animation.BOUNCE,
-    icon: this.selectedIcon,
-  };
-  selectedRentedMarkerOptions: google.maps.MarkerOptions = {
-    draggable: false,
-    animation: google.maps.Animation.BOUNCE,
-    icon: this.rentedIcon,
-  };
 
   markerPositions: google.maps.LatLngLiteral[] = [];
   selectedMarker: Marker | null = null;
@@ -74,6 +45,10 @@ export class MapComponent {
     private _vehiclesService: VehiclesService,
     private _mapService: MapService
   ) {
+    this.normalIcon = this._mapService.normalIcon;
+    this.rentedIcon = this._mapService.rentedIcon;
+    this.selectedIcon = this._mapService.selectedIcon;
+
     this._mapService.markers.subscribe(newMarkers => {
       this.markers = newMarkers || [];
     });

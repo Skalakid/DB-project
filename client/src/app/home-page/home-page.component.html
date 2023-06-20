@@ -54,6 +54,16 @@
               selectedRentedMarker?.energyLevel || selectedMarker?.energyLevel
             }}
           </p>
+          <p>
+            Koszt za minutę:
+            {{
+              roundPrice(
+                selectedRentedMarker?.costPerMinute ||
+                  selectedMarker?.costPerMinute ||
+                  0
+              )
+            }}
+          </p>
         </div>
 
         <div class="right-side">

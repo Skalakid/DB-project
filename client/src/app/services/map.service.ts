@@ -14,6 +14,31 @@ export class MapService {
   markers = new BehaviorSubject<Marker[]>([]);
   rentedMarkers = new BehaviorSubject<Marker[]>([]);
 
+  normalIcon = {
+    url: '../../assets/mark.png',
+    scaledSize: new google.maps.Size(50, 50),
+  };
+
+  rentedIcon = {
+    url: '../../assets/mark1.png',
+    scaledSize: new google.maps.Size(50, 50),
+  };
+
+  selectedIcon = {
+    url: '../../assets/mark2.png',
+    scaledSize: new google.maps.Size(50, 50),
+  };
+
+  unavailableIcon = {
+    url: '../../assets/mark3.png',
+    scaledSize: new google.maps.Size(50, 50),
+  };
+
+  tmpIcon = {
+    url: '../../assets/mark4.png',
+    scaledSize: new google.maps.Size(50, 50),
+  };
+
   constructor(private _vehiclesService: VehiclesService) {
     this._vehiclesService.avaliableVehicles.subscribe(newMarkers => {
       this.markers.next(newMarkers || []);

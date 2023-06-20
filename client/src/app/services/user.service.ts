@@ -22,11 +22,23 @@ export class UserService {
   }
 
   async getStats() {
+    if (!this.userId) return;
     try {
       const res = await get('/users/stats', {
         userId: this.userId,
       })();
       this.currentUserStats.next(res);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
+  }
+
+  async getAllUsers() {
+    try {
+      const res = await get('/users/get/all', {})();
+      return res;
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);

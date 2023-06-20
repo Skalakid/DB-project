@@ -35,14 +35,15 @@ export class AuthService {
   }
 
   async logout() {
-    try {
-      const refreshToken = await localStorage.getItem('refreshToken');
-      await _delete('/auth/logout', {
-        token: refreshToken,
-      })();
-    } catch (error) {
-      //
-    }
+    // try {
+    //   const refreshToken = await localStorage.getItem('refreshToken');
+    //   await _delete('/auth/logout', {
+    //     token: refreshToken,
+    //   })();
+    // } catch (error) {
+    //   //
+    //   console.error(error.message);
+    // }
     localStorage.clear();
     this._router.navigate(['/login']);
   }
@@ -78,6 +79,18 @@ export class AuthService {
     } catch (error) {
       if (retryCount >= 0) this.refreshAccessToken(retryCount - 1);
       this.logout();
+    }
+  };
+
+  changePassword = async (userId: number, newPassword: string) => {
+    try {
+      const res = await post('/auth/change/password', {
+        userId,
+        newPassword,
+      })();
+      return res;
+    } catch (error) {
+      if (error instanceof Error) console.error(error.message);
     }
   };
 }
