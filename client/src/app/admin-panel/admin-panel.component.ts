@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { Marker } from '../models/Marker';
-import { Reservation } from '../models/Reservation';
 import { SelectedMarker } from '../models/SelectedMarker';
 import { User } from '../models/User';
-import { Vehicle } from '../models/Vehicle';
 import { AuthService } from '../services/auth.service';
-import { MapService } from '../services/map.service';
 import { UserService } from '../services/user.service';
 import { VehiclesService } from '../services/vehicles.service';
+import { MapService } from '../services/map.service';
+import { Icon } from '../models/Icon';
 
 @Component({
   selector: 'app-admin-panel',
@@ -24,58 +23,18 @@ export class AdminPanelComponent {
     clickableIcons: false,
   };
 
-  normalIcon = {
-    url: '../../assets/mark.png',
-    scaledSize: new google.maps.Size(50, 50),
-  };
+  normalIcon: Icon | null = null;
+  rentedIcon: Icon | null = null;
+  unavailableIcon: Icon | null = null;
+  tmpIcon: Icon | null = null;
 
-  rentedIcon = {
-    url: '../../assets/mark1.png',
-    scaledSize: new google.maps.Size(50, 50),
-  };
-
-  unavailableIcon = {
-    url: '../../assets/mark2.png',
-    scaledSize: new google.maps.Size(50, 50),
-  };
+  onSelectAnimation = google.maps.Animation.BOUNCE;
 
   isCreatingNewMarker = false;
 
   selectedMarker: SelectedMarker = {
     type: 'available',
     marker: null,
-  };
-
-  markerOptions: google.maps.MarkerOptions = {
-    draggable: false,
-    animation: null,
-    icon: this.normalIcon,
-  };
-  rentedMarkerOptions: google.maps.MarkerOptions = {
-    draggable: false,
-    animation: null,
-    icon: this.rentedIcon,
-  };
-  unavailableMarkerOptions: google.maps.MarkerOptions = {
-    draggable: false,
-    animation: null,
-    icon: this.unavailableIcon,
-  };
-
-  selectedMarkerOptions: google.maps.MarkerOptions = {
-    draggable: false,
-    animation: google.maps.Animation.BOUNCE,
-    icon: this.normalIcon,
-  };
-  selectedRentedMarkerOptions: google.maps.MarkerOptions = {
-    draggable: false,
-    animation: google.maps.Animation.BOUNCE,
-    icon: this.rentedIcon,
-  };
-  selectedUnavailableMarkerOptions: google.maps.MarkerOptions = {
-    draggable: false,
-    animation: google.maps.Animation.BOUNCE,
-    icon: this.unavailableIcon,
   };
 
   userVisible = false;
@@ -106,8 +65,14 @@ export class AdminPanelComponent {
   constructor(
     private _userService: UserService,
     private _vehiclesService: VehiclesService,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _mapService: MapService
   ) {
+    this.normalIcon = this._mapService.normalIcon;
+    this.rentedIcon = this._mapService.rentedIcon;
+    this.unavailableIcon = this._mapService.unavailableIcon;
+    this.tmpIcon = this._mapService.tmpIcon;
+
     this._vehiclesService.models.subscribe(models => {
       this.vehicleModels = models || [];
     });

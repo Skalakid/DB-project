@@ -9,11 +9,17 @@
     *ngFor="let marker of markers; let i = index"
     [position]="{ lat: marker.latCords, lng: marker.lngCords }"
     [title]="marker.modelId"
-    [options]="
-      selectedMarker !== null && marker.vehicleId === selectedMarker.vehicleId
-        ? selectedMarkerOptions
-        : markerOptions
-    "
+    [options]="{
+      draggable: false,
+      animation:
+        selectedMarker?.vehicleId === marker.vehicleId
+          ? onSelectAnimation
+          : null,
+      icon:
+        selectedMarker?.vehicleId === marker.vehicleId
+          ? selectedIcon
+          : normalIcon
+    }"
     (mapClick)="selectMarker(i)">
   </map-marker>
 
@@ -21,12 +27,14 @@
     *ngFor="let marker of rentedMarkers; let i = index"
     [position]="{ lat: marker.latCords, lng: marker.lngCords }"
     [title]="marker.vehicleId.toString()"
-    [options]="
-      selectedRentedMarker !== null &&
-      selectedRentedMarker.vehicleId === marker.vehicleId
-        ? selectedRentedMarkerOptions
-        : rentedMarkerOptions
-    "
+    [options]="{
+      draggable: false,
+      animation:
+        selectedRentedMarker?.vehicleId === marker.vehicleId
+          ? onSelectAnimation
+          : null,
+      icon: rentedIcon
+    }"
     (mapClick)="selectRentedMarker(i)">
   </map-marker>
 </google-map>

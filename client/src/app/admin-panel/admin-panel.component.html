@@ -76,18 +76,25 @@
         <map-marker
           *ngIf="isCreatingNewMarker"
           [position]="{ lat: latCords, lng: lngCords }"
-          [options]="markerOptions">
+          [options]="{
+            draggable: false,
+            animation: null,
+            icon: tmpIcon
+          }">
         </map-marker>
 
         <map-marker
           *ngFor="let marker of availableMarkers; let i = index"
           [position]="{ lat: marker.latCords, lng: marker.lngCords }"
           [title]="marker.modelId"
-          [options]="
-            selectedMarker.marker?.vehicleId === marker.vehicleId
-              ? selectedMarkerOptions
-              : markerOptions
-          "
+          [options]="{
+            draggable: false,
+            animation:
+              selectedMarker.marker?.vehicleId === marker.vehicleId
+                ? onSelectAnimation
+                : null,
+            icon: normalIcon
+          }"
           (mapClick)="selectAvailableVehice(i)">
         </map-marker>
 
@@ -95,11 +102,14 @@
           *ngFor="let marker of unavailableMarkers; let i = index"
           [position]="{ lat: marker.latCords, lng: marker.lngCords }"
           [title]="marker.modelId"
-          [options]="
-            selectedMarker.marker?.vehicleId === marker.vehicleId
-              ? selectedUnavailableMarkerOptions
-              : unavailableMarkerOptions
-          "
+          [options]="{
+            draggable: false,
+            animation:
+              selectedMarker.marker?.vehicleId === marker.vehicleId
+                ? onSelectAnimation
+                : null,
+            icon: unavailableIcon
+          }"
           (mapClick)="selectUnavailableVehice(i)">
         </map-marker>
 
@@ -107,11 +117,14 @@
           *ngFor="let marker of rentedMarkers; let i = index"
           [position]="{ lat: marker.latCords, lng: marker.lngCords }"
           [title]="marker.modelId"
-          [options]="
-            selectedMarker.marker?.vehicleId === marker.vehicleId
-              ? selectedRentedMarkerOptions
-              : rentedMarkerOptions
-          "
+          [options]="{
+            draggable: false,
+            animation:
+              selectedMarker.marker?.vehicleId === marker.vehicleId
+                ? onSelectAnimation
+                : null,
+            icon: rentedIcon
+          }"
           (mapClick)="selectRentedVehicle(i)">
         </map-marker>
       </google-map>
