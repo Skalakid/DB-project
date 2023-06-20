@@ -4,6 +4,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: rgb(51, 36, 30);
+}
+
+.centerContainer img {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 h3 {
@@ -20,8 +27,35 @@ a {
   display: flex;
   flex-direction: column;
   border-radius: 20px;
-  border: 1px solid black;
+  border: 1px solid rgb(237, 188, 115);
   padding: 24px;
+  position: fixed;
+  background: rgba(255, 255, 255, 0.24);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(6.2px);
+  -webkit-backdrop-filter: blur(6.2px);
+}
+
+.formBox a {
+  color: orange;
+}
+
+.butt {
+  padding: 10px 15px;
+  background-color: #dc7028;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border: solid 1px rgb(230, 143, 43);
+}
+
+.butt:hover {
+  background-color: #e66713;
+}
+
+input {
+  background-color: rgba(250, 176, 96, 0.4);
 }
 
 input {
