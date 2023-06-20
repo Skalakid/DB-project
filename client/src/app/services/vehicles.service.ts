@@ -25,8 +25,8 @@ export class VehiclesService {
   ) {
     this._authService.currentUser.subscribe(currentUser => {
       this.userId = currentUser?.userId || null;
+      this.refresh();
     });
-    this.refresh();
   }
 
   refresh() {
